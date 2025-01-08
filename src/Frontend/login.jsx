@@ -19,7 +19,7 @@ const Login = () => {
           <LoginInputField type="text" placeholder="Community Name" icon="local_library"/>
         )}
         <LoginInputField type="text" placeholder="Username" icon="person"/>
-        <LoginInputField type="password" placeholder="Password" icon="visibility"/>
+        <LoginInputField type="password" placeholder="Password" icon=""/>
         <button className="login-button" type="submit">Login</button>
       </form>
       <p className="sigunup-text">
