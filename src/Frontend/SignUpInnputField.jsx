@@ -1,22 +1,3 @@
-// import React, { useState } from 'react';
-// 
-// const SignUpInputField = ({ type, placeholder, icon }) => {
-//  const [showPassword, setShowPassword] = useState(false);
-// 
-//   return (
-//     <div className="input-wrapper">
-//       <input type={showPassword ? 'text' : type} placeholder={placeholder} className="input-field" required/>
-//       <i className="material-symbols-rounded">{icon}</i>
-//       {type === 'password' && (
-//         <i className="material-symbols-rounded eye-icon" onClick={() => setShowPassword(!showPassword)} style={{ cursor: 'pointer' }} >
-//           {showPassword ? 'visibility' : 'visibility_off'}</i>
-//       )}
-//     </div>
-//   );
-// };
-// export default SignUpInputField;
-
-
 import React, { useState } from 'react';
 
 const SignUpInputField = ({ type, placeholder, icon, value, onChange, error, minLength, confirmPassword }) => {
