@@ -1,20 +1,16 @@
 import React, { useState } from 'react';
 
-const SignUpInputField = ({ type, placeholder, icon, value, onChange, error, minLength, confirmPassword }) => {
+const SignUpInputField = ({ type, placeholder, icon, value, onChange, error, minLength }) => {
   const [showPassword, setShowPassword] = useState(false);
-
-  const handleChange = (e) => {
-    onChange(e); 
-  };
 
   return (
     <div className="input-wrapper">
       <input
-        type={showPassword ? 'text' : type}
+        type={showPassword && type === 'password' ? 'text' : type}
         placeholder={placeholder}
         className="input-field"
         value={value}
-        onChange={handleChange}
+        onChange={onChange}
         required
         minLength={minLength}
       />
