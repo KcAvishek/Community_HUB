@@ -22,6 +22,9 @@ const register = async (req, res) => {
       role: 'non-member', // Set default role
     });
 
+// Save the user to the database
+    await newUser.save();
+    
     res.status(200).json({ message: 'User registered successfully', newUser });
   } catch (err) {
     console.log(err);
