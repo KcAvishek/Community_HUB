@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 
 const register = async (req, res) => {
   try {
-    const { username, email, password } = req.body;
+    const { username, email, password , role} = req.body;
 
     // Check if the user already exists
     const existingUser = await User.findOne({ email });
@@ -20,7 +20,7 @@ const register = async (req, res) => {
       username,
       email,
       password,
-      role: 'non-member', // Set default role
+      role:"non-member", // Set default role
     });
 
 // Save the user to the database
@@ -35,53 +35,58 @@ const register = async (req, res) => {
 
 
 
-// const login = async (req, res) => {
-//   const { username, password, role } = req.body;
-//   try {
-//     console.log("Login request received:", { username, password, role });
 // 
-//     // Check if user exists by username
+// // login 
+// const login = async (req, res) => {
+//   const { username, password, role, community_name } = req.body;
+//   console.log("Received login data:", req.body);  // Log the received data
+// 
+//   try {
 //     const user = await User.findOne({ username });
 //     if (!user) {
 //       return res.status(404).json({ message: 'User not found' });
 //     }
 // 
-//     console.log("User found:", user);
-// 
-//     // Validate password (compare entered password with stored plain password)
+//     // Compare the plain text password with the stored password
 //     if (password !== user.password) {
 //       return res.status(401).json({ message: 'Invalid credentials' });
 //     }
 // 
-//     console.log("Password validated successfully");
+//     if (role !== 'nonMember') {
+//       const community = await Community.findOne({ name: community_name });
+//       if (!community) {
+//         return res.status(404).json({ message: 'Community not found' });
+//       }
 // 
-//     // Check if the user role matches the selected role
-//     if (role && user.role !== role) {
-//       return res.status(403).json({ message: 'Role mismatch' });
+//       if (community.leader_id !== user._id.toString()) {
+//         return res.status(403).json({ message: 'User is not authorized for this community' });
+//       }
 //     }
 // 
-//     console.log (process.env.JWT_SECRET)
-//     // Generate JWT
 //     const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
 // 
-//     res.status(200).json({ message: 'Login successful', role: user.role });
+//     res.status(200).json({ message: 'Login successful', role: user.role, token });
 //   } catch (err) {
 //     console.error("Error during login:", err);
 //     res.status(500).json({ success: false, message: err.message });
 //   }
 // };
-// 
-// module.exports = { register, login };
 
 
 const login = async (req, res) => {
   const { username, password, role, community_name } = req.body;
-  console.log("Received login data:", req.body);  // Log the received data
+  console.log("Received login data:", req.body); // Log the received data
 
   try {
+    // Find the user by username
     const user = await User.findOne({ username });
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Check if the provided role matches the user's role
+    if (user.role !== role) {
+      return res.status(403).json({ message: 'Role mismatch' });
     }
 
     // Compare the plain text password with the stored password
@@ -89,25 +94,50 @@ const login = async (req, res) => {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
 
-    // // Check role and community_name if role is not 'nonMember'
-    // if (role && user.role !== role) {
-    //   return res.status(403).json({ message: 'Role mismatch' });
-    // }
+    // If the role is 'leader', validate the community_name
+    if (role === 'leader') {
+      if (!community_name) {
+        return res.status(400).json({ message: 'Community name is required for leaders' });
+      }
 
-    if (role !== 'nonMember') {
       const community = await Community.findOne({ name: community_name });
       if (!community) {
         return res.status(404).json({ message: 'Community not found' });
       }
 
+      // Check if the user is authorized for the community
       if (community.leader_id !== user._id.toString()) {
         return res.status(403).json({ message: 'User is not authorized for this community' });
       }
     }
 
-    const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    // If the role is 'Member', optionally validate the community
+    if (role === 'Member' && community_name) {
+      const community = await Community.findOne({ name: community_name });
+      if (!community) {
+        return res.status(404).json({ message: 'Community not found' });
+      }
 
-    res.status(200).json({ message: 'Login successful', role: user.role, token });
+      // Check if the user belongs to the community
+      const isMember = community.members.includes(user._id.toString());
+      if (!isMember) {
+        return res.status(403).json({ message: 'User is not a member of this community' });
+      }
+    }
+
+    // Generate a JWT token
+    const token = jwt.sign(
+      { id: user._id, role: user.role },
+      process.env.JWT_SECRET,
+      { expiresIn: '1h' }
+    );
+
+    // Return a success response
+    res.status(200).json({
+      message: 'Login successful',
+      role: user.role,
+      token,
+    });
   } catch (err) {
     console.error("Error during login:", err);
     res.status(500).json({ success: false, message: err.message });
@@ -115,3 +145,4 @@ const login = async (req, res) => {
 };
 
 module.exports = { register, login };
+

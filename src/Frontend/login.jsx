@@ -44,6 +44,8 @@ import { toast } from "sonner";
 const Login = () => {
   const location = useLocation();
   const { selectedRole } = location.state || { selectedRole: '' };
+  const roleDisplay = selectedRole === 'non-member' ? 'Non-Member' : selectedRole;
+
 
   const [communityName, setCommunityName] = useState('');
   const [username, setUsername] = useState('');
@@ -66,7 +68,7 @@ const Login = () => {
       role: selectedRole,
     };
 
-    if (selectedRole !== 'nonMember') {
+    if (selectedRole !== 'non-member') {
       loginData.community_name = communityName;  // Sending community name if role is not nonMember
     }
 
@@ -99,7 +101,7 @@ const Login = () => {
         Community <span className="highlight">HUB</span>
       </h2>
       <form onSubmit={handleLogin} className="login-form">
-        {selectedRole !== 'nonMember' && (
+        {selectedRole !== 'non-member' && (
           <LoginInputField
             type="text"
             placeholder="Community_Name"

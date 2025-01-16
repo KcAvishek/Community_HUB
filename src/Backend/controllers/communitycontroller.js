@@ -18,7 +18,7 @@ const createCommunity = async (req, res) => {
     const newCommunity = await Community.create({
       name,
       description,
-      leader_id, // leader_id as string
+      leader_id, 
     });
 
     res.status(201).json({ message: 'Community created successfully', community: newCommunity });

@@ -69,7 +69,8 @@ const SignUp = () => {
         }
       } 
       catch (error) {
-        toast.error( error.message);
+        // toast.error( error.message);
+        toast.error(error.response?.data?.message || error.message || "An error occurred during signup.");
         console.error('Error during signup:', error.response ? error.response.data : error.message);
       } 
       finally {
@@ -103,7 +104,7 @@ const SignUp = () => {
         <SignUpInputField
           type="password"
           placeholder="Password"
-          icon="visibility"
+          icon=""
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           error={errors.password}
@@ -112,7 +113,7 @@ const SignUp = () => {
         <SignUpInputField
           type="password"
           placeholder="Confirm Password"
-          icon="visibility"
+          icon=""
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
           error={errors.confirmPassword}

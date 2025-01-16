@@ -10,7 +10,7 @@ const Roles = () => {
   const roleOptions = [
     { value: 'leader', label: 'Leader' },
     { value: 'communityMember', label: 'Community Member' },
-    { value: 'nonMember', label: 'Non-Member' },
+    { value: 'non-member', label: 'Non-Member' },
   ];
 
   const handleRoleChange = (event) => {
