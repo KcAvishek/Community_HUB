@@ -1,33 +1,30 @@
 @import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Rubik:ital,wght@0,300..900;1,300..900&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap");
 
-* {
+body {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
   font-family: "Lato", sans-serif;
 }
-/* App.css */
-body {
+
+.dashboard {
   display: flex;
-  justify-content: center;
-  align-items: center;
   height: 100vh;
-  background: #ffffff;
-}
-.App {
-  display: flex;
+  margin: 0;
+  padding: 0;
 }
 
 .sidebar {
-  margin: -10px;
-  /* width: 200px; */
-  background-color: #0b8457;
-  color: #ffffff;
+  width: 250px;
+  background-color: #3d4b57;
+  color: white;
+  display: flex;
+  flex-direction: column;
   padding: 20px;
+  margin: 0;
 }
 
 .sidebar h2 {
-  text-align: center;
+  margin-bottom: 20px;
 }
 
 .sidebar ul {
@@ -37,38 +34,93 @@ body {
 
 .sidebar ul li {
   margin: 10px 0;
+  cursor: pointer;
+}
+
+.sidebar .logout {
+  margin-top: auto;
+  padding: 10px;
+  background-color: #e74c3c;
+  border: none;
+  color: white;
+  cursor: pointer;
 }
 
 .main-content {
   flex: 1;
   padding: 20px;
+  background-color: #ecf0f1;
+  display: flex;
+  flex-direction: column;
 }
 
-.announcement,
-.poll-voting,
-.events,
-.communities {
-  margin-bottom: 20px;
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.announcement-item {
-  border-bottom: 1px solid #ccc;
-  padding: 10px 0;
+.header h1 {
+  margin: 0;
 }
 
-.poll-voting form label {
-  display: block;
+.header-icons {
+  display: flex;
+  align-items: center;
+}
+
+.header-icons .icon {
+  margin: 0 10px;
+  font-size: 20px;
+}
+
+.profile-pic {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid #bdc3c7;
+  margin: 20px 0;
+}
+
+.content-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 20px;
+}
+
+.box {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.announcements {
+  grid-column: span 2;
+}
+
+.poll form {
+  display: flex;
+  flex-direction: column;
+}
+
+.poll label {
   margin-bottom: 10px;
 }
 
-button {
-  background-color: #228b22;
-  color: white;
+.poll button {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #3498db;
   border: none;
-  padding: 10px 20px;
+  color: white;
   cursor: pointer;
 }
 
-button:hover {
-  background-color: #1c6c17;
+.events {
+  text-align: center;
 }
