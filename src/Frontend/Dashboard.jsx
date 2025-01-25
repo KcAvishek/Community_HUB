@@ -1,7 +1,13 @@
-import React from "react";
+// import React from "react";
+import React, { useState } from 'react';
 import "./Dashboard.css";
+import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
+
 
 const Dashboard = () => {
+  const [selectedDate, setSelectedDate] = useState(new Date());
+
   return (
     <div className="dashboard">
       <aside className="sidebar">
@@ -34,16 +40,24 @@ const Dashboard = () => {
           <div className="box announcements">
             <h2>Announcement</h2>
             <div className="announcement-item">
-              <p><strong>Cameron Williamson</strong></p>
-              <p>Board Meeting</p>
+              <p><strong>UI Visuals</strong></p>
+              <p> Meeting</p>
               <p>
                 There is a sprinkler that appears to be broken shooting out
                 water in front of my home.
               </p>
             </div>
             <div className="announcement-item">
-              <p><strong>Jenny Wilson</strong></p>
+              <p><strong>Gaming</strong></p>
               <p>Pool closed for maintenance...</p>
+              <p>
+                From its medieval origins to the digital era, learn everything
+                there is to know about the ubiquitous lorem ipsum passage.
+              </p>
+            </div>
+            <div className="announcement-item">
+              <p><strong>AI Learner</strong></p>
+              <p>Ready fo the events</p>
               <p>
                 From its medieval origins to the digital era, learn everything
                 there is to know about the ubiquitous lorem ipsum passage.
@@ -73,9 +87,10 @@ const Dashboard = () => {
             </form>
           </div>
           <div className="box events">
-            <h2>Events</h2>
-            <p>Nothing's on the schedule</p>
-          </div>
+  <h2>Events</h2>
+  <Calendar onChange={setSelectedDate} value={selectedDate} />
+  <p>Selected Date: {selectedDate.toLocaleDateString()}</p>
+</div>
         </div>
       </main>
     </div>
