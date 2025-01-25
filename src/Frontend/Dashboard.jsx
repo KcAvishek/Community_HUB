@@ -11,29 +11,46 @@ const Dashboard = () => {
   return (
     <div className="dashboard">
       <aside className="sidebar">
-        <h2>Community HUB</h2>
-        <ul>
-          <li>Dashboard</li>
-          <li>Form</li>
-          <li>Calendar</li>
-          <li>Notification</li>
-          <li>Feedback</li>
-          <li>Settings</li>
-        </ul>
-        <button className="logout">Logout</button>
-      </aside>
+  <h2>Community HUB</h2>
+  <ul>
+    <li>
+      <span className="material-icons">dashboard</span> Dashboard
+    </li>
+    <li>
+      <span className="material-icons">description</span> Form
+    </li>
+    <li>
+      <span className="material-icons">calendar_today</span> Calendar
+    </li>
+    <li>
+      <span className="material-icons">notifications</span> Notification
+    </li>
+    <li>
+      <span className="material-icons">feedback</span> Feedback
+    </li>
+    <li>
+      <span className="material-icons">settings</span> Settings
+    </li>
+  </ul>
+  <div className="logout">
+    <span className="material-icons">logout</span> Logout
+  </div>
+</aside>
+
       <main className="main-content">
         <header className="header">
           <h1>Welcome, Abhishek</h1>
           <div className="header-icons">
-            <span className="icon">📧</span>
-            <span className="icon">🔔</span>
-            <img
-              src="https://via.placeholder.com/40"
-              alt="User"
-              className="profile-pic"
-            />
-          </div>
+          <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
+      <span className="material-icons">inbox</span>
+      <span className="material-icons">notifications</span>
+  {/* <img
+    src="https://via.placeholder.com/40"
+    alt="User"
+    className="profile-pic"
+  /> */}
+</div>
+
         </header>
         <hr />
         <div className="content-grid">
