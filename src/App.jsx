@@ -12,7 +12,7 @@ const App = () => {
     <Router>
       <Toaster position="top-center" richColors />
       <Routes>
-      <Route path="/test-icons" element={<Dashboard  />} />
+      <Route path="/test-icons" element={<Dashboard />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
