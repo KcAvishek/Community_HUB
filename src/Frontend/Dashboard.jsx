@@ -115,8 +115,8 @@ const Dashboard = () => {
             <h2>Community Form</h2>
             <form>
               <label>
-                Name:
-                <input type="text" placeholder="Enter your name" />
+                Community Name:
+                <input type="text" placeholder="Enter community name" />
               </label>
               <label>
                 Email:
@@ -124,7 +124,7 @@ const Dashboard = () => {
               </label>
               <label>
                 Feedback:
-                <textarea placeholder="Write your feedback here"></textarea>
+                <textarea placeholder="Name, Why you choose this community?"></textarea>
               </label>
               <button type="submit">Submit</button>
             </form>
@@ -157,14 +157,14 @@ const Dashboard = () => {
         {activeSection === "feedback" && (
           <div className="box feedback-section">
             <h2>Feedback</h2>
-            <p>View or submit feedback for the community here.</p>
+            <p>View or submit feedback process.</p>
           </div>
         )}
 
         {activeSection === "settings" && (
           <div className="box settings-section">
             <h2>Settings</h2>
-            <p>Manage your account settings here.</p>
+            <p>Account settings process.</p>
           </div>
         )}
       </main>
