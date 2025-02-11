@@ -376,3 +376,53 @@ h2 {
   transform: scale(1.1);
   transition: all 0.2s ease-in-out;
 }
+
+/* Form Styling */
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Individual Form Fields */
+.form1,
+.form2,
+.form3,
+.form-button {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+/* Label Styling */
+label {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 5px;
+  display: block;
+}
+
+/* Input and Textarea Styling */
+.form-1 {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  display: block; /* Ensures it takes full width below label */
+}
+
+/* Button Styling */
+.form-button button {
+  width: 100%;
+  padding: 10px;
+  background: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.form-button button:hover {
+  background: #0056b3;
+}

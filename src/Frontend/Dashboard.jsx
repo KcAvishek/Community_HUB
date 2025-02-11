@@ -5,7 +5,7 @@ import "./Dashboard.css";
 
 const Dashboard = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [activeSection, setActiveSection] = useState("dashboard"); // Track active section
+  const [activeSection, setActiveSection] = useState("dashboard"); 
 
   return (
     <div className="dashboard">
@@ -111,22 +111,38 @@ const Dashboard = () => {
         )}
 
         {activeSection === "form" && (
-          <div className="box form-section">
-            <h2>Community Form</h2>
+          <div className=" box form-section">
+            <h2 className="form-header">Community Form</h2>
             <form>
+            <div className="form1">
               <label>
                 Community Name:
-                <input type="text" placeholder="Enter community name" />
+                <input  className="form-1" type="community-name" placeholder="Enter community name" />
               </label>
+            </div>
+            <div className="form1">
+              <label>
+                Name:
+                <input  className="form-1" type="name" placeholder="Enter your name" />
+              </label>
+            </div>
+
+            <div className="form2">
               <label>
                 Email:
-                <input type="email" placeholder="Enter your email" />
+                <input className="form-1" type="email" placeholder="Enter your email" />
               </label>
+            </div>
+            <div className="form3">
               <label>
-                Feedback:
-                <textarea placeholder="Name, Why you choose this community?"></textarea>
+              
+                 <div className="h3">Feedback:</div>
+                <textarea className="form-1" placeholder="Name, Why you choose this community?"></textarea>
               </label>
-              <button type="submit">Submit</button>
+            </div>
+            <div className="form-button">
+               <button type="submit">Submit</button>
+            </div>
             </form>
           </div>
         )}
