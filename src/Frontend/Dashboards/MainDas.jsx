@@ -20,6 +20,9 @@ const MainDas = () => {
           <li onClick={() => setActiveSection("form")}>
             <span className="material-icons">description</span> Form
           </li>
+          <li onClick={() => setActiveSection("poll&Voting")}>
+            <span className="material-icons">description</span> Poll&Voting
+          </li>
           <li onClick={() => setActiveSection("calendar")}>
             <span className="material-icons">calendar_today</span> Calendar
           </li>

@@ -35,43 +35,6 @@ const register = async (req, res) => {
 
 
 
-// 
-// // login 
-// const login = async (req, res) => {
-//   const { username, password, role, community_name } = req.body;
-//   console.log("Received login data:", req.body);  // Log the received data
-// 
-//   try {
-//     const user = await User.findOne({ username });
-//     if (!user) {
-//       return res.status(404).json({ message: 'User not found' });
-//     }
-// 
-//     // Compare the plain text password with the stored password
-//     if (password !== user.password) {
-//       return res.status(401).json({ message: 'Invalid credentials' });
-//     }
-// 
-//     if (role !== 'nonMember') {
-//       const community = await Community.findOne({ name: community_name });
-//       if (!community) {
-//         return res.status(404).json({ message: 'Community not found' });
-//       }
-// 
-//       if (community.leader_id !== user._id.toString()) {
-//         return res.status(403).json({ message: 'User is not authorized for this community' });
-//       }
-//     }
-// 
-//     const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
-// 
-//     res.status(200).json({ message: 'Login successful', role: user.role, token });
-//   } catch (err) {
-//     console.error("Error during login:", err);
-//     res.status(500).json({ success: false, message: err.message });
-//   }
-// };
-
 
 const login = async (req, res) => {
   const { username, password, role, community_name } = req.body;

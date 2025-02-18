@@ -6,6 +6,7 @@ const app = express();
 const authRouter = require('../Backend/routes/userRoutes');
 const communityRouter = require('../Backend/routes/communityRoutes');
 const announcementRouter = require('../Backend/routes/AnnouncementRoutes'); 
+const eventRoutes = require('../Backend/routes/eventRoutes');
 const dotenv = require('dotenv');
 // Converts the config.env file to environmental variables
 dotenv.config({ path: './config.env' });
@@ -33,6 +34,7 @@ mongoose.connect(mongoURI)
 app.use('/api/auth', authRouter,);
 app.use('/api/a1', communityRouter,);
 app.use('/api/a2', announcementRouter); 
+app.use('/api/a3', eventRoutes);
 // Basic route
 app.get('/', (req, res) => {
   res.send('<h1>Hello World!</h1>');

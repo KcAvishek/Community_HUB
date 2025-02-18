@@ -1,20 +1,31 @@
 const mongoose = require('mongoose');
-const Announcement = require('../models/Announcements');
+const Announcement = require('../models/Announcements'); 
 
-// Create a new announcement
-exports.createAnnouncement = async (req, res) => {
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+
+const createAnnouncement = async (req, res) => {
   try {
+    console.log("Request Body:", req.body); // Log incoming request
+
     const { title, content, community_id, created_by, expires_at } = req.body;
+
+    // Ensure all required fields are present
+    if (!title || !content || !community_id || !created_by || !expires_at) {
+      return res.status(400).json({ error: "All fields are required" });
+    }
+
     const announcement = new Announcement({ title, content, community_id, created_by, expires_at });
     await announcement.save();
-    res.status(201).json({ message: 'Announcement created successfully', announcement });
+
+    res.status(201).json({ message: "Announcement created successfully", announcement });
   } catch (error) {
-    res.status(500).json({ error: 'Failed to create announcement' });
+    console.error("Error creating announcement:", error);
+    res.status(500).json({ error: error.message });
   }
 };
 
-// Get all announcements
-exports.getAnnouncements = async (req, res) => {
+const getAnnouncements = async (req, res) => {
   try {
     const announcements = await Announcement.find().populate('community_id').populate('created_by');
     res.status(200).json(announcements);
@@ -23,8 +34,7 @@ exports.getAnnouncements = async (req, res) => {
   }
 };
 
-// Get a single announcement by ID
-exports.getAnnouncementById = async (req, res) => {
+const getAnnouncementById = async (req, res) => {
   try {
     const announcement = await Announcement.findById(req.params.id).populate('community_id').populate('created_by');
     if (!announcement) return res.status(404).json({ error: 'Announcement not found' });
@@ -34,8 +44,7 @@ exports.getAnnouncementById = async (req, res) => {
   }
 };
 
-// Update an announcement
-exports.updateAnnouncement = async (req, res) => {
+const updateAnnouncement = async (req, res) => {
   try {
     const updatedAnnouncement = await Announcement.findByIdAndUpdate(req.params.id, req.body, { new: true });
     if (!updatedAnnouncement) return res.status(404).json({ error: 'Announcement not found' });
@@ -45,8 +54,7 @@ exports.updateAnnouncement = async (req, res) => {
   }
 };
 
-// Delete an announcement
-exports.deleteAnnouncement = async (req, res) => {
+const deleteAnnouncement = async (req, res) => {
   try {
     const deletedAnnouncement = await Announcement.findByIdAndDelete(req.params.id);
     if (!deletedAnnouncement) return res.status(404).json({ error: 'Announcement not found' });
@@ -55,3 +63,5 @@ exports.deleteAnnouncement = async (req, res) => {
     res.status(500).json({ error: 'Failed to delete announcement' });
   }
 };
+
+module.exports = {createAnnouncement,getAnnouncements,getAnnouncementById,updateAnnouncement,deleteAnnouncement};
