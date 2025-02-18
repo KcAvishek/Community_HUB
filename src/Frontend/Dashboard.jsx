@@ -57,7 +57,6 @@ const Dashboard = () => {
             <h2>Announcement</h2>
             <div className="announcement-item">
               <p><strong>UI Visuals</strong></p>
-              <p> Meeting</p>
               <p>
                 There is a sprinkler that appears to be broken shooting out
                 water in front of my home.
@@ -65,7 +64,7 @@ const Dashboard = () => {
             </div>
             <div className="announcement-item">
               <p><strong>Gaming</strong></p>
-              <p>Pool closed for maintenance...</p>
+              
               <p>
                 From its medieval origins to the digital era, learn everything
                 there is to know about the ubiquitous lorem ipsum passage.
@@ -73,7 +72,6 @@ const Dashboard = () => {
             </div>
             <div className="announcement-item">
               <p><strong>AI Learner</strong></p>
-              <p>Ready fo the events</p>
               <p>
                 From its medieval origins to the digital era, learn everything
                 there is to know about the ubiquitous lorem ipsum passage.
@@ -109,6 +107,7 @@ const Dashboard = () => {
 </div>
         </div>
         )}
+        
 
         {activeSection === "form" && (
           <div className=" box form-section">
