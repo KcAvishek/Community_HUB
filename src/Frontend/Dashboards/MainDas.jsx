@@ -76,9 +76,7 @@ const MainDas = () => {
           <li onClick={() => setActiveSection("Time Track")}>
             <span className="material-icons">hourglass_top</span> Time Track
           </li>
-          <li onClick={() => setActiveSection("notifications")}>
-            <span className="material-icons">notifications</span> Notification
-          </li>
+          
           <li onClick={() => setActiveSection("feedback")}>
             <span className="material-icons">feedback</span> Feedback
           </li>
@@ -323,24 +321,13 @@ const MainDas = () => {
   </div>
 )}
 
-
-
-
-
-
-
         {activeSection === "Time Track" && (
           <div className="box Time Track-section">
             {/* Time Track content */}
           </div>
         )}
 
-        {activeSection === "notifications" && (
-          <div className="box notifications-section">
-            <h2>Notifications</h2>
-            <p>You have 3 new notifications</p>
-          </div>
-        )}
+    
 
         {activeSection === "feedback" && (
           <div className="box feedback-section">

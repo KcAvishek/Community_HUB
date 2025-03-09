@@ -109,42 +109,53 @@ const Dashboard = () => {
         )}
         
 
-        {activeSection === "form" && (
-          <div className=" box form-section">
-            <h2 className="form-header">Community Form</h2>
-            <form>
-            <div className="form1">
-              <label>
-                Community Name:
-                <input  className="form-1" type="community-name" placeholder="Enter community name" />
-              </label>
-            </div>
-            <div className="form1">
-              <label>
-                Name:
-                <input  className="form-1" type="name" placeholder="Enter your name" />
-              </label>
-            </div>
 
-            <div className="form2">
-              <label>
-                Email:
-                <input className="form-1" type="email" placeholder="Enter your email" />
-              </label>
-            </div>
-            <div className="form3">
-              <label>
-              
-                 <div className="h3">Feedback:</div>
-                <textarea className="form-1" placeholder="Name, Why you choose this community?"></textarea>
-              </label>
-            </div>
-            <div className="form-button">
-               <button type="submit">Submit</button>
-            </div>
-            </form>
-          </div>
-        )}
+
+        {activeSection === "form" && (
+  <div className="box form-section">
+    <h2 className="form-header">Community Form</h2>
+    <form>
+      <div className="form1">
+        <label>
+          Community Name:
+          <select className="form-1">
+            <option value="">Select a community</option>
+            <option value="Uivisuals">Uivisuals</option>
+            <option value="AI-learns">AI-learns</option>
+            <option value="Gaming Dev">Gaming Dev</option>
+            
+            {/* Add more communities as needed */}
+          </select>
+        </label>
+      </div>
+      <div className="form1">
+        <label>
+          Name:
+          <input className="form-1" type="text" placeholder="Enter your name" />
+        </label>
+      </div>
+      <div className="form2">
+        <label>
+          Email:
+          <input className="form-1" type="email" placeholder="Enter your email" />
+        </label>
+      </div>
+      <div className="form3">
+        <label>
+          <div className="h3">Feedback:</div>
+          <textarea className="form-1" placeholder="Why did you choose this community?"></textarea>
+        </label>
+      </div>
+      <div className="form-button">
+        <button type="submit">Submit</button>
+      </div>
+    </form>
+  </div>
+)}
+
+
+
+
 
         {activeSection === "calendar" && (
           <div className="box calendar-section">
