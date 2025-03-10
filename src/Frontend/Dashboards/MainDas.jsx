@@ -76,10 +76,6 @@ const MainDas = () => {
           <li onClick={() => setActiveSection("Time Track")}>
             <span className="material-icons">hourglass_top</span> Time Track
           </li>
-          
-          <li onClick={() => setActiveSection("feedback")}>
-            <span className="material-icons">feedback</span> Feedback
-          </li>
           <li onClick={() => setActiveSection("settings")}>
             <span className="material-icons">settings</span> Settings
           </li>
@@ -234,40 +230,156 @@ const MainDas = () => {
         )}
 
         {/* Other sections remain unchanged */}
+
+
         {activeSection === "form" && (
-          <div className="box form-section">
-            <h2 className="form-header">Community Form</h2>
-            <form>
-              <div className="form1">
-                <label>
-                  Community Name:
-                  <input className="form-1" type="text" placeholder="Enter community name" />
-                </label>
-              </div>
-              <div className="form1">
-                <label>
-                  Name:
-                  <input className="form-1" type="text" placeholder="Enter your name" />
-                </label>
-              </div>
-              <div className="form2">
-                <label>
-                  Email:
-                  <input className="form-1" type="email" placeholder="Enter your email" />
-                </label>
-              </div>
-              <div className="form3">
-                <label>
-                  <div className="h3">Feedback:</div>
-                  <textarea className="form-1" placeholder="Name, Why you choose this community?"></textarea>
-                </label>
-              </div>
-              <div className="form-button">
-                <button type="submit">Submit</button>
-              </div>
-            </form>
-          </div>
-        )}
+  <div className="box form-section">
+    <h2>Form Management</h2>
+    <div className="form-management-container">
+      <div className="form-table-wrapper">
+        <table className="user-table">
+          <thead>
+            <tr>
+              <th>
+                <input type="checkbox" />
+              </th>
+              <th className="full-name-column">FULL NAME</th>
+              <th className="status-column">STATUS</th>
+              <th className="email-column">EMAIL</th>
+              <th className="feedback-column">FEEDBACK</th>
+              <th className="actions-column"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <input type="checkbox" />
+              </td>
+              <td className="user-name-cell">
+                <div className="user-avatar">A</div>
+                <span>Abhishek K.C.</span>
+              </td>
+              <td>
+                <span className="status-badge status-accepted">Accepted</span>
+              </td>
+              <td>abhi@Gmail.com</td>
+              <td>Great service!</td>
+              <td>
+                <div className="action-menu">
+                  <button className="action-button">...</button>
+                  <div className="status-dropdown">
+                    <button className="status-option status-accepted">Accepted</button>
+                    <button className="status-option status-pending">Pending</button>
+                    <button className="status-option status-rejected">Rejected</button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <input type="checkbox" />
+              </td>
+              <td className="user-name-cell">
+                <div className="user-avatar">R</div>
+                <span>Rachel Doe</span>
+              </td>
+              <td>
+                <span className="status-badge status-pending">Pending</span>
+              </td>
+              <td>rachel@Gmail.com</td>
+              <td>Waiting for more info</td>
+              <td>
+                <div className="action-menu">
+                  <button className="action-button">...</button>
+                  <div className="status-dropdown">
+                    <button className="status-option status-accepted">Accepted</button>
+                    <button className="status-option status-pending">Pending</button>
+                    <button className="status-option status-rejected">Rejected</button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <input type="checkbox" />
+              </td>
+              <td className="user-name-cell">
+                <div className="user-avatar">C</div>
+                <span>Costa Quinn</span>
+              </td>
+              <td>
+                <span className="status-badge status-rejected">Rejected</span>
+              </td>
+              <td>costa@Gmail.com</td>
+              <td>Not eligible</td>
+              <td>
+                <div className="action-menu">
+                  <button className="action-button">...</button>
+                  <div className="status-dropdown">
+                    <button className="status-option status-accepted">Accepted</button>
+                    <button className="status-option status-pending">Pending</button>
+                    <button className="status-option status-rejected">Rejected</button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <input type="checkbox" />
+              </td>
+              <td className="user-name-cell">
+                <div className="user-avatar">A</div>
+                <span>Anna Richard</span>
+              </td>
+              <td>
+                <span className="status-badge status-accepted">Accepted</span>
+              </td>
+              <td>anne@Gmail.com</td>
+              <td>Perfect fit</td>
+              <td>
+                <div className="action-menu">
+                  <button className="action-button">...</button>
+                  <div className="status-dropdown">
+                    <button className="status-option status-accepted">Accepted</button>
+                    <button className="status-option status-pending">Pending</button>
+                    <button className="status-option status-rejected">Rejected</button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <input type="checkbox" />
+              </td>
+              <td className="user-name-cell">
+                <div className="user-avatar">B</div>
+                <span>Bob Dean</span>
+              </td>
+              <td>
+                <span className="status-badge status-accepted">Accepted</span>
+              </td>
+              <td>bob@Gmail.com</td>
+              <td>Excellent candidate</td>
+              <td>
+                <div className="action-menu">
+                  <button className="action-button">...</button>
+                  <div className="status-dropdown">
+                    <button className="status-option status-accepted">Accepted</button>
+                    <button className="status-option status-pending">Pending</button>
+                    <button className="status-option status-rejected">Rejected</button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+     
+    </div>
+  </div>
+)}
+        
 
 
 {activeSection === "calendar" && (
@@ -295,13 +407,13 @@ const MainDas = () => {
             className="event-input"
           />
         </div>
-        <div className="form-group">
+        {/* <div className="form-group">
           <label>Description:</label>
           <textarea
             placeholder="Enter event description"
             className="description-input"
           ></textarea>
-        </div>
+        </div> */}
         <div className="form-buttons">
           <button className="add-event-button">Add Event</button>
           <button className="update-event-button">Update Event</button>

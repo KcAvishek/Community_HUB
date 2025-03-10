@@ -558,6 +558,7 @@ h2 {
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 14px;
+  width: 60%;
 }
 
 .description-input {
@@ -735,4 +736,206 @@ textarea.form-1 {
 
 .form-button button:hover {
   background-color: #0056b3; /* Darker shade on hover */
+}
+
+/* Form Management Styles */
+.form-management-container {
+  width: 100%;
+}
+
+.form-table-wrapper {
+  overflow-x: auto;
+  margin-bottom: 20px;
+}
+
+/* User Table Styles */
+.user-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.user-table thead th {
+  background-color: #f7fafc;
+  text-align: left;
+  padding: 12px 15px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #4a5568;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.user-table tbody td {
+  padding: 15px;
+  font-size: 14px;
+  border-bottom: 1px solid #e2e8f0;
+  color: #2d3748;
+}
+
+.user-table tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+/* User Avatar */
+.user-name-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.user-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #4a5568;
+  font-weight: 600;
+}
+
+/* Status Badges */
+.status-badge {
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.status-accepted {
+  background-color: #c6f6d5;
+  color: #276749;
+}
+
+.status-pending {
+  background-color: #feebc8;
+  color: #9c4221;
+}
+
+.status-rejected {
+  background-color: #fed7d7;
+  color: #9b2c2c;
+}
+
+/* Action Menu */
+.action-menu {
+  position: relative;
+}
+
+.action-button {
+  background: none;
+  border: none;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #4a5568;
+  padding: 5px 10px;
+}
+
+.status-dropdown {
+  position: absolute;
+  right: 0;
+  top: 100%;
+  background-color: white;
+  border-radius: 6px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 8px 0;
+  width: 150px;
+  z-index: 10;
+  display: none;
+}
+
+.action-menu:hover .status-dropdown {
+  display: block;
+}
+
+.status-option {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 8px 15px;
+  border: none;
+  background: none;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.status-option:hover {
+  background-color: #f7fafc;
+}
+
+/* Pagination Controls */
+.pagination-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 15px;
+}
+
+.showing-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #4a5568;
+}
+
+.showing-info select {
+  padding: 5px 10px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  font-size: 14px;
+  background-color: white;
+}
+
+.pagination-buttons {
+  display: flex;
+  gap: 5px;
+}
+
+.pagination-button {
+  padding: 8px 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  background-color: white;
+  cursor: pointer;
+  font-size: 14px;
+  color: #4a5568;
+  min-width: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pagination-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pagination-button.active {
+  background-color: #4299e1;
+  color: white;
+  border-color: #4299e1;
+}
+
+/* Column Widths */
+.full-name-column {
+  width: 25%;
+}
+
+.status-column {
+  width: 15%;
+}
+
+.email-column {
+  width: 20%;
+}
+
+.feedback-column {
+  width: 30%;
+}
+
+.actions-column {
+  width: 10%;
 }

@@ -21,12 +21,6 @@ const Dashboard = () => {
           <li onClick={() => setActiveSection("calendar")}>
             <span className="material-icons">calendar_today</span> Calendar
           </li>
-          <li onClick={() => setActiveSection("notifications")}>
-            <span className="material-icons">notifications</span> Notification
-          </li>
-          <li onClick={() => setActiveSection("feedback")}>
-            <span className="material-icons">feedback</span> Feedback
-          </li>
           <li onClick={() => setActiveSection("settings")}>
             <span className="material-icons">settings</span> Settings
           </li>
