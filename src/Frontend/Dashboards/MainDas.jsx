@@ -14,43 +14,97 @@ const MainDas = () => {
   const [announcementTitle, setAnnouncementTitle] = useState("");
   const [announcementDescription, setAnnouncementDescription] = useState("");
 
+  // State for attendance tracking
+  const [attendanceDate, setAttendanceDate] = useState('');
+  const [attendees, setAttendees] = useState([
+    { id: 1, name: 'Abhishek K.C.', status: 'Not Marked' },
+    { id: 2, name: 'Kenab K.C.', status: 'Not Marked' },
+    { id: 3, name: 'Niraj Chaudhary', status: 'Not Marked' },
+    { id: 4, name: 'Suren Tamang', status: 'Not Marked' },
+  ]);
+
   const handleAddEvent = () => {
-    // Add event logic
     alert("Event Added");
   };
 
   const handleUpdateEvent = () => {
-    // Update event logic
     alert("Event Updated");
   };
 
   const handleDeleteEvent = () => {
-    // Delete event logic
     alert("Event Deleted");
   };
 
-  // Open the modal
   const openModal = () => {
     setIsModalOpen(true);
   };
 
-  // Close the modal
   const closeModal = () => {
     setIsModalOpen(false);
     setAnnouncementTitle("");
     setAnnouncementDescription("");
   };
 
-  // Handle adding a new announcement
   const handleAddAnnouncement = () => {
-    // Add your logic here to handle the new announcement
     console.log("New Announcement:", {
       title: announcementTitle,
       description: announcementDescription,
     });
-
-    // Close the modal
     closeModal();
+  };
+
+  const handleAttendance = (id, newStatus) => {
+    setAttendees(attendees.map(attendee => 
+      attendee.id === id 
+        ? { ...attendee, status: newStatus }
+        : attendee
+    ));
+  };
+
+  // New handler functions for buttons
+  const handleSaveAttendance = () => {
+    console.log("Saving attendance:", { date: attendanceDate, attendees });
+    alert("Attendance Saved");
+    // Add your save logic here (e.g., API call)
+  };
+
+  const handleUpdateAttendance = () => {
+    console.log("Updating attendance:", { date: attendanceDate, attendees });
+    alert("Attendance Updated");
+    // Add your update logic here (e.g., API call)
+  };
+
+  const handleDeleteAttendance = () => {
+    setAttendees(attendees.map(attendee => ({ ...attendee, status: 'Not Marked' })));
+    setAttendanceDate('');
+    alert("Attendance Cleared");
+    // Add your delete logic here
+  };
+
+  const handlePrint = () => {
+    const printContent = document.getElementById('attendance-table-printable').outerHTML;
+    const printWindow = window.open('', '_blank');
+    printWindow.document.write(`
+      <html>
+        <head>
+          <title>Attendance Report - ${attendanceDate}</title>
+          <style>
+            table { width: 100%; border-collapse: collapse; }
+            th, td { padding: 12px; text-align: center; border: 1px solid #ddd; }
+            th { background-color: #f5f5f5; }
+            @media print { 
+              .no-print { display: none; }
+            }
+          </style>
+        </head>
+        <body>
+          <h2>Attendance Report - ${attendanceDate || 'No Date Selected'}</h2>
+          ${printContent}
+        </body>
+      </html>
+    `);
+    printWindow.document.close();
+    printWindow.print();
   };
 
   return (
@@ -99,7 +153,7 @@ const MainDas = () => {
         </header>
         <hr />
 
-        {/* Render sections dynamically */}
+        {/* Existing sections remain unchanged */}
         {activeSection === "dashboard" && (
           <div className="content-grid">
             <div className="box announcements">
@@ -199,7 +253,6 @@ const MainDas = () => {
           </div>
         )}
 
-        {/* Modal for adding announcements */}
         {isModalOpen && (
           <div className="modal-overlay">
             <div className="modal">
@@ -229,217 +282,272 @@ const MainDas = () => {
           </div>
         )}
 
-        {/* Other sections remain unchanged */}
-
-
         {activeSection === "form" && (
-  <div className="box form-section">
-    <h2>Form Management</h2>
-    <div className="form-management-container">
-      <div className="form-table-wrapper">
-        <table className="user-table">
-          <thead>
-            <tr>
-              <th>
-                <input type="checkbox" />
-              </th>
-              <th className="full-name-column">FULL NAME</th>
-              <th className="status-column">STATUS</th>
-              <th className="email-column">EMAIL</th>
-              <th className="feedback-column">FEEDBACK</th>
-              <th className="actions-column"></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>
-                <input type="checkbox" />
-              </td>
-              <td className="user-name-cell">
-                <div className="user-avatar">A</div>
-                <span>Abhishek K.C.</span>
-              </td>
-              <td>
-                <span className="status-badge status-accepted">Accepted</span>
-              </td>
-              <td>abhi@Gmail.com</td>
-              <td>Great service!</td>
-              <td>
-                <div className="action-menu">
-                  <button className="action-button">...</button>
-                  <div className="status-dropdown">
-                    <button className="status-option status-accepted">Accepted</button>
-                    <button className="status-option status-pending">Pending</button>
-                    <button className="status-option status-rejected">Rejected</button>
-                  </div>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <input type="checkbox" />
-              </td>
-              <td className="user-name-cell">
-                <div className="user-avatar">R</div>
-                <span>Rachel Doe</span>
-              </td>
-              <td>
-                <span className="status-badge status-pending">Pending</span>
-              </td>
-              <td>rachel@Gmail.com</td>
-              <td>Waiting for more info</td>
-              <td>
-                <div className="action-menu">
-                  <button className="action-button">...</button>
-                  <div className="status-dropdown">
-                    <button className="status-option status-accepted">Accepted</button>
-                    <button className="status-option status-pending">Pending</button>
-                    <button className="status-option status-rejected">Rejected</button>
-                  </div>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <input type="checkbox" />
-              </td>
-              <td className="user-name-cell">
-                <div className="user-avatar">C</div>
-                <span>Costa Quinn</span>
-              </td>
-              <td>
-                <span className="status-badge status-rejected">Rejected</span>
-              </td>
-              <td>costa@Gmail.com</td>
-              <td>Not eligible</td>
-              <td>
-                <div className="action-menu">
-                  <button className="action-button">...</button>
-                  <div className="status-dropdown">
-                    <button className="status-option status-accepted">Accepted</button>
-                    <button className="status-option status-pending">Pending</button>
-                    <button className="status-option status-rejected">Rejected</button>
-                  </div>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <input type="checkbox" />
-              </td>
-              <td className="user-name-cell">
-                <div className="user-avatar">A</div>
-                <span>Anna Richard</span>
-              </td>
-              <td>
-                <span className="status-badge status-accepted">Accepted</span>
-              </td>
-              <td>anne@Gmail.com</td>
-              <td>Perfect fit</td>
-              <td>
-                <div className="action-menu">
-                  <button className="action-button">...</button>
-                  <div className="status-dropdown">
-                    <button className="status-option status-accepted">Accepted</button>
-                    <button className="status-option status-pending">Pending</button>
-                    <button className="status-option status-rejected">Rejected</button>
-                  </div>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <input type="checkbox" />
-              </td>
-              <td className="user-name-cell">
-                <div className="user-avatar">B</div>
-                <span>Bob Dean</span>
-              </td>
-              <td>
-                <span className="status-badge status-accepted">Accepted</span>
-              </td>
-              <td>bob@Gmail.com</td>
-              <td>Excellent candidate</td>
-              <td>
-                <div className="action-menu">
-                  <button className="action-button">...</button>
-                  <div className="status-dropdown">
-                    <button className="status-option status-accepted">Accepted</button>
-                    <button className="status-option status-pending">Pending</button>
-                    <button className="status-option status-rejected">Rejected</button>
-                  </div>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      
-     
-    </div>
-  </div>
-)}
-        
-
-
-{activeSection === "calendar" && (
-  <div className="box calendar-section">
-    <h2>Events</h2>
-    <div className="calendar-container">
-      <div className="calendar-wrapper">
-        <Calendar onChange={setSelectedDate} value={selectedDate} />
-      </div>
-      <div className="calendar-form">
-        <div className="form-group">
-          <label>Date:</label>
-          <input
-            type="text"
-            value={selectedDate.toLocaleDateString()}
-            disabled
-            className="date-input"
-          />
-        </div>
-        <div className="form-group">
-          <label>Event:</label>
-          <input
-            type="text"
-            placeholder="Enter event name"
-            className="event-input"
-          />
-        </div>
-        {/* <div className="form-group">
-          <label>Description:</label>
-          <textarea
-            placeholder="Enter event description"
-            className="description-input"
-          ></textarea>
-        </div> */}
-        <div className="form-buttons">
-          <button className="add-event-button">Add Event</button>
-          <button className="update-event-button">Update Event</button>
-          <button className="delete-event-button">Delete Event</button>
-        </div>
-      </div>
-    </div>
-    <div className="current-date-events">
-      <p>Current Date: {selectedDate.toLocaleDateString()}</p>
-      <div className="event-list">
-        <h3>Events on this Date:</h3>
-        <ul>
-          <li>No events for this date.</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-)}
-
-        {activeSection === "Time Track" && (
-          <div className="box Time Track-section">
-            {/* Time Track content */}
+          <div className="box form-section">
+            <h2>Form Management</h2>
+            <div className="form-management-container">
+              <div className="form-table-wrapper">
+                <table className="user-table">
+                  <thead>
+                    <tr>
+                      <th>
+                        <input type="checkbox" />
+                      </th>
+                      <th className="full-name-column">FULL NAME</th>
+                      <th className="status-column">STATUS</th>
+                      <th className="email-column">EMAIL</th>
+                      <th className="feedback-column">FEEDBACK</th>
+                      <th className="actions-column"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <input type="checkbox" />
+                      </td>
+                      <td className="user-name-cell">
+                        <div className="user-avatar">A</div>
+                        <span>Abhishek K.C.</span>
+                      </td>
+                      <td>
+                        <span className="status-badge status-accepted">Accepted</span>
+                      </td>
+                      <td>abhi@Gmail.com</td>
+                      <td>Great service!</td>
+                      <td>
+                        <div className="action-menu">
+                          <button className="action-button">...</button>
+                          <div className="status-dropdown">
+                            <button className="status-option status-accepted">Accepted</button>
+                            <button className="status-option status-pending">Pending</button>
+                            <button className="status-option status-rejected">Rejected</button>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <input type="checkbox" />
+                      </td>
+                      <td className="user-name-cell">
+                        <div className="user-avatar">R</div>
+                        <span>Rahul Rana</span>
+                      </td>
+                      <td>
+                        <span className="status-badge status-pending">Pending</span>
+                      </td>
+                      <td>rana@Gmail.com</td>
+                      <td>Waiting for more info</td>
+                      <td>
+                        <div className="action-menu">
+                          <button className="action-button">...</button>
+                          <div className="status-dropdown">
+                            <button className="status-option status-accepted">Accepted</button>
+                            <button className="status-option status-pending">Pending</button>
+                            <button className="status-option status-rejected">Rejected</button>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <input type="checkbox" />
+                      </td>
+                      <td className="user-name-cell">
+                        <div className="user-avatar">N</div>
+                        <span>Niraj thapa</span>
+                      </td>
+                      <td>
+                        <span className="status-badge status-rejected">Rejected</span>
+                      </td>
+                      <td>thapa1@Gmail.com</td>
+                      <td>Not eligible</td>
+                      <td>
+                        <div className="action-menu">
+                          <button className="action-button">...</button>
+                          <div className="status-dropdown">
+                            <button className="status-option status-accepted">Accepted</button>
+                            <button className="status-option status-pending">Pending</button>
+                            <button className="status-option status-rejected">Rejected</button>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <input type="checkbox" />
+                      </td>
+                      <td className="user-name-cell">
+                        <div className="user-avatar">A</div>
+                        <span>Anp gurung</span>
+                      </td>
+                      <td>
+                        <span className="status-badge status-accepted">Accepted</span>
+                      </td>
+                      <td>anupe@Gmail.com</td>
+                      <td>Perfect fit</td>
+                      <td>
+                        <div className="action-menu">
+                          <button className="action-button">...</button>
+                          <div className="status-dropdown">
+                            <button className="status-option status-accepted">Accepted</button>
+                            <button className="status-option status-pending">Pending</button>
+                            <button className="status-option status-rejected">Rejected</button>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <input type="checkbox" />
+                      </td>
+                      <td className="user-name-cell">
+                        <div className="user-avatar">K</div>
+                        <span>Kenab K.C.</span>
+                      </td>
+                      <td>
+                        <span className="status-badge status-accepted">Accepted</span>
+                      </td>
+                      <td>Kenab@Gmail.com</td>
+                      <td>Excellent candidate</td>
+                      <td>
+                        <div className="action-menu">
+                          <button className="action-button">...</button>
+                          <div className="status-dropdown">
+                            <button className="status-option status-accepted">Accepted</button>
+                            <button className="status-option status-pending">Pending</button>
+                            <button className="status-option status-rejected">Rejected</button>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
         )}
 
-    
+        {activeSection === "calendar" && (
+          <div className="box calendar-section">
+            <h2>Events</h2>
+            <div className="calendar-container">
+              <div className="calendar-wrapper">
+                <Calendar onChange={setSelectedDate} value={selectedDate} />
+              </div>
+              <div className="calendar-form">
+                <div className="form-group">
+                  <label>Date:</label>
+                  <input
+                    type="text"
+                    value={selectedDate.toLocaleDateString()}
+                    disabled
+                    className="date-input"
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Event:</label>
+                  <input
+                    type="text"
+                    placeholder="Enter event name"
+                    className="event-input"
+                  />
+                </div>
+                <div className="form-buttons">
+                  <button className="add-event-button">Add Event</button>
+                  <button className="update-event-button">Update Event</button>
+                  <button className="delete-event-button">Delete Event</button>
+                </div>
+              </div>
+            </div>
+            <div className="current-date-events">
+              <p>Current Date: {selectedDate.toLocaleDateString()}</p>
+              <div className="event-list">
+                <h3>Events on this Date:</h3>
+                <ul>
+                  <li>No events for this date.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Updated Time Track Section with Buttons and Print */}
+        {activeSection === "Time Track" && (
+          <div className="box time-track-section">
+            <h2>Event Attendance Tracker</h2>
+            
+            {/* Date Input */}
+            <div className="date-input">
+              <label htmlFor="eventDate">Select Event Date: </label>
+              <input 
+                type="date" 
+                id="eventDate"
+                value={attendanceDate}
+                onChange={(e) => setAttendanceDate(e.target.value)}
+              />
+            </div>
+
+            {/* Attendance Table */}
+            <table className="attendance-table" id="attendance-table-printable">
+              <thead>
+                <tr>
+                  <th>SN</th>
+                  <th>Name</th>
+                  <th>Status</th>
+                  <th className="no-print">Attendance</th>
+                </tr>
+              </thead>
+              <tbody>
+                {attendees.map((attendee, index) => (
+                  <tr key={attendee.id}>
+                    <td>{index + 1}</td>
+                    <td>{attendee.name}</td>
+                    <td>{attendee.status}</td>
+                    <td className="no-print">
+                      <div className="attendance-buttons">
+                        <button 
+                          className={`attendance-btn ${attendee.status === 'Absent' ? 'active' : ''}`}
+                          onClick={() => handleAttendance(attendee.id, 'Absent')}
+                        >
+                          x
+                        </button>
+                        <button 
+                          className={`attendance-btn ${attendee.status === 'Present' ? 'active' : ''}`}
+                          onClick={() => handleAttendance(attendee.id, 'Present')}
+                        >
+                          ✓
+                        </button>
+                        <button 
+                          className={`attendance-btn ${attendee.status === 'Late' ? 'active' : ''}`}
+                          onClick={() => handleAttendance(attendee.id, 'Late')}
+                        >
+                          !
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+
+            {/* Action Buttons */}
+            <div className="attendance-actions">
+              <button className="action-btn save-btn" onClick={handleSaveAttendance}>
+                Save
+              </button>
+              <button className="action-btn update-btn" onClick={handleUpdateAttendance}>
+                Update
+              </button>
+              <button className="action-btn delete-btn" onClick={handleDeleteAttendance}>
+                Delete
+              </button>
+              <button className="action-btn print-btn" onClick={handlePrint}>
+                Print
+              </button>
+            </div>
+          </div>
+        )}
 
         {activeSection === "feedback" && (
           <div className="box feedback-section">
@@ -460,6 +568,3 @@ const MainDas = () => {
 };
 
 export default MainDas;
-
-
-

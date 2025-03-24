@@ -555,7 +555,6 @@ h2 {
 .event-input,
 .description-input {
   padding: 8px;
-  border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 14px;
   width: 60%;
@@ -938,4 +937,172 @@ textarea.form-1 {
 
 .actions-column {
   width: 10%;
+}
+
+/* timetrack --------------------------------------------------------------------------------------*/
+
+.time-track-section {
+  padding: 20px;
+}
+
+.attendance-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+}
+
+.attendance-table th,
+.attendance-table td {
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+  font-size: 14px;
+}
+
+.attendance-table th {
+  background-color: #f7fafc;
+  font-weight: bold;
+  color: #2d3748;
+  font-size: 13px;
+}
+
+.attendance-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.attendance-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.attendance-btn:hover {
+  background-color: #f0f0f0;
+}
+
+.attendance-btn.active {
+  border-width: 2px;
+}
+
+.attendance-btn:nth-child(1).active {
+  border-color: #ff4444;
+  color: #ff4444;
+}
+
+.attendance-btn:nth-child(2).active {
+  border-color: #00cc00;
+  color: #00cc00;
+}
+
+.attendance-btn:nth-child(3).active {
+  border-color: #ffaa00;
+  color: #ffaa00;
+}
+
+.date-input {
+  margin-bottom: 20px;
+}
+
+.date-input label {
+  margin-right: 10px;
+  font-weight: bold;
+}
+
+.date-input input {
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Status colors */
+.attendance-table td:nth-child(3) {
+  font-weight: bold;
+}
+
+.attendance-table td:nth-child(3):not(:empty) {
+  color: #666;
+}
+
+.attendance-table tr td:nth-child(3):contains("Absent") {
+  color: #ff4444;
+}
+
+.attendance-table tr td:nth-child(3):contains("Present") {
+  color: #00cc00;
+}
+
+.attendance-table tr td:nth-child(3):contains("Late") {
+  color: #ffaa00;
+}
+
+/* Action Buttons */
+.attendance-actions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.action-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.save-btn {
+  background-color: #4caf50;
+  color: white;
+}
+
+.save-btn:hover {
+  background-color: #45a049;
+}
+
+.update-btn {
+  background-color: #2196f3;
+  color: white;
+}
+
+.update-btn:hover {
+  background-color: #1e87db;
+}
+
+.delete-btn {
+  background-color: #f44336;
+  color: white;
+}
+
+.delete-btn:hover {
+  background-color: #da190b;
+}
+
+.print-btn {
+  background-color: #9c27b0;
+  color: white;
+}
+
+.print-btn:hover {
+  background-color: #7b1fa2;
+}
+
+/* Ensure buttons are hidden in print view */
+@media print {
+  .no-print {
+    display: none;
+  }
+  .attendance-actions {
+    display: none;
+  }
 }
