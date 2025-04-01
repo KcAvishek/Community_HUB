@@ -5,7 +5,48 @@ import "./Dashboard.css";
 
 const Dashboard = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [activeSection, setActiveSection] = useState("dashboard"); 
+  const [activeSection, setActiveSection] = useState("dashboard");
+
+  // State for notifications
+  const [notifications, setNotifications] = useState([
+    {
+      id: 1,
+      title: "New Community Event",
+      message: "A new event has been scheduled for March 25, 2025.",
+      read: false,
+    },
+    {
+      id: 2,
+      title: "Form Submission",
+      message: "Your form has been successfully submitted.",
+      read: true,
+    },
+    {
+      id: 3,
+      title: "Poll Update",
+      message: "New poll results are available for review.",
+      read: false,
+    },
+  ]);
+
+  // Handle marking a notification as read
+  const markAsRead = (id) => {
+    setNotifications(
+      notifications.map((notif) =>
+        notif.id === id ? { ...notif, read: true } : notif
+      )
+    );
+  };
+
+  // Handle deleting a notification
+  const deleteNotification = (id) => {
+    setNotifications(notifications.filter((notif) => notif.id !== id));
+  };
+
+  // Handle clearing all notifications
+  const clearAllNotifications = () => {
+    setNotifications([]);
+  };
 
   return (
     <div className="dashboard">
@@ -20,6 +61,12 @@ const Dashboard = () => {
           </li>
           <li onClick={() => setActiveSection("calendar")}>
             <span className="material-icons">calendar_today</span> Calendar
+          </li>
+          <li onClick={() => setActiveSection("Topic-hub")}>
+            <span className="material-icons">diversity_3</span> Topic Hub
+          </li>
+          <li onClick={() => setActiveSection("Notification")}>
+            <span className="material-icons">notifications</span> Notification
           </li>
           <li onClick={() => setActiveSection("settings")}>
             <span className="material-icons">settings</span> Settings
@@ -39,7 +86,18 @@ const Dashboard = () => {
               href="https://fonts.googleapis.com/icon?family=Material+Icons"
             />
             <span className="material-icons">inbox</span>
-            <span className="material-icons">notifications</span>
+            <span
+              className="material-icons notification-icon"
+              onClick={() => setActiveSection("Notification")}
+              style={{ cursor: "pointer" }}
+            >
+              notifications
+              {notifications.filter((n) => !n.read).length > 0 && (
+                <span className="notification-badge">
+                  {notifications.filter((n) => !n.read).length}
+                </span>
+              )}
+            </span>
           </div>
         </header>
         <hr />
@@ -47,109 +105,123 @@ const Dashboard = () => {
         {/* Render sections dynamically */}
         {activeSection === "dashboard" && (
           <div className="content-grid">
-          <div className="box announcements">
-            <h2>Announcement</h2>
-            <div className="announcement-item">
-              <p><strong>UI Visuals</strong></p>
-              <p>
-                There is a sprinkler that appears to be broken shooting out
-                water in front of my home.
-              </p>
+            <div className="box announcements">
+              <h2>Announcement</h2>
+              <div className="announcement-item">
+                <p>
+                  <strong>UI Visuals</strong>
+                </p>
+                <p>
+                  There is a sprinkler that appears to be broken shooting out
+                  water in front of my home.
+                </p>
+              </div>
+              <div className="announcement-item">
+                <p>
+                  <strong>Gaming</strong>
+                </p>
+                <p>
+                  From its medieval origins to the digital era, learn
+                  everything there is to know about the ubiquitous lorem ipsum
+                  passage.
+                </p>
+              </div>
+              <div className="announcement-item">
+                <p>
+                  <strong>AI Learner</strong>
+                </p>
+                <p>
+                  From its medieval origins to the digital era, learn
+                  everything there is to know about the ubiquitous lorem ipsum
+                  passage.
+                </p>
+              </div>
             </div>
-            <div className="announcement-item">
-              <p><strong>Gaming</strong></p>
-              
-              <p>
-                From its medieval origins to the digital era, learn everything
-                there is to know about the ubiquitous lorem ipsum passage.
-              </p>
+            <div className="box poll">
+              <h2>Poll and Voting</h2>
+              <form>
+                <label>
+                  <input type="radio" name="poll" value="Morning" />
+                  Morning
+                </label>
+                <label>
+                  <input
+                    type="radio"
+                    name="poll"
+                    value="Afternoon"
+                    defaultChecked
+                  />
+                  Afternoon
+                </label>
+                <label>
+                  <input type="radio" name="poll" value="Evening" />
+                  Evening
+                </label>
+                <label>
+                  <input type="radio" name="poll" value="Night" />
+                  Night
+                </label>
+                <button type="submit">Submit your vote</button>
+              </form>
             </div>
-            <div className="announcement-item">
-              <p><strong>AI Learner</strong></p>
-              <p>
-                From its medieval origins to the digital era, learn everything
-                there is to know about the ubiquitous lorem ipsum passage.
-              </p>
+            <div className="box events">
+              <h2>Events</h2>
+              <Calendar onChange={setSelectedDate} value={selectedDate} />
+              <p>Selected Date: {selectedDate.toLocaleDateString()}</p>
             </div>
           </div>
-          <div className="box poll">
-            <h2>Poll and Voting</h2>
-            <form>
-              <label>
-                <input type="radio" name="poll" value="Morning" />
-                Morning
-              </label>
-              <label>
-                <input type="radio" name="poll" value="Afternoon" defaultChecked />
-                Afternoon
-              </label>
-              <label>
-                <input type="radio" name="poll" value="Evening" />
-                Evening
-              </label>
-              <label>
-                <input type="radio" name="poll" value="Night" />
-                Night
-              </label>
-              <button type="submit">Submit your vote</button>
-            </form>
-          </div>
-          <div className="box events">
-  <h2>Events</h2>
-  <Calendar onChange={setSelectedDate} value={selectedDate} />
-  <p>Selected Date: {selectedDate.toLocaleDateString()}</p>
-</div>
-        </div>
         )}
-        
-
-
 
         {activeSection === "form" && (
-  <div className="box form-section">
-    <h2 className="form-header">Community Form</h2>
-    <form>
-      <div className="form1">
-        <label>
-          Community Name:
-          <select className="form-1">
-            <option value="">Select a community</option>
-            <option value="Uivisuals">Uivisuals</option>
-            <option value="AI-learns">AI-learns</option>
-            <option value="Gaming Dev">Gaming Dev</option>
-            
-            {/* Add more communities as needed */}
-          </select>
-        </label>
-      </div>
-      <div className="form1">
-        <label>
-          Name:
-          <input className="form-1" type="text" placeholder="Enter your name" />
-        </label>
-      </div>
-      <div className="form2">
-        <label>
-          Email:
-          <input className="form-1" type="email" placeholder="Enter your email" />
-        </label>
-      </div>
-      <div className="form3">
-        <label>
-          <div className="h3">Feedback:</div>
-          <textarea className="form-1" placeholder="Why did you choose this community?"></textarea>
-        </label>
-      </div>
-      <div className="form-button">
-        <button type="submit">Submit</button>
-      </div>
-    </form>
-  </div>
-)}
-
-
-
-
+          <div className="box form-section">
+            <h2 className="form-header">Community Form</h2>
+            <form>
+              <div className="form1">
+                <label>
+                  Community Name:
+                  <select className="form-1">
+                    <option value="">Select a community</option>
+                    <option value="Uivisuals">Uivisuals</option>
+                    <option value="AI-learns">AI-learns</option>
+                    <option value="Gaming Dev">Gaming Dev</option>
+                  </select>
+                </label>
+              </div>
+              <div className="form1">
+                <label>
+                  Name:
+                  <input
+                    className="form-1"
+                    type="text"
+                    placeholder="Enter your name"
+                  />
+                </label>
+              </div>
+              <div className="form2">
+                <label>
+                  Email:
+                  <input
+                    className="form-1"
+                    type="email"
+                    placeholder="Enter your email"
+                  />
+                </label>
+              </div>
+              <div className="form3">
+                <label>
+                  <div className="h3">Feedback:</div>
+                  <textarea
+                    className="form-1"
+                    placeholder="Why did you choose this community?"
+                  ></textarea>
+                </label>
+              </div>
+              <div className="form-button">
+                <button type="submit">Submit</button>
+              </div>
+            </form>
+          </div>
+        )}
 
         {activeSection === "calendar" && (
           <div className="box calendar-section">
@@ -167,17 +239,57 @@ const Dashboard = () => {
           </div>
         )}
 
-        {activeSection === "notifications" && (
-          <div className="box notifications-section">
+        {/* Updated Notification Section */}
+        {activeSection === "Notification" && (
+          <div className="box notification-section">
             <h2>Notifications</h2>
-            <p>You have 3 new notifications</p>
-          </div>
-        )}
-
-        {activeSection === "feedback" && (
-          <div className="box feedback-section">
-            <h2>Feedback</h2>
-            <p>View or submit feedback process.</p>
+            {notifications.length === 0 ? (
+              <p>No notifications available.</p>
+            ) : (
+              <>
+                <div className="notification-header">
+                  <span>
+                    You have {notifications.filter((n) => !n.read).length} unread notifications
+                  </span>
+                  {/* <button
+                    className="clear-all-btn"
+                    onClick={clearAllNotifications}
+                  >
+                    Clear All
+                  </button> */}
+                </div>
+                <div className="notification-list">
+                  {notifications.map((notification) => (
+                    <div
+                      key={notification.id}
+                      className={`notification-item ${notification.read ? "read" : "unread"}`}
+                    >
+                      <div className="notification-content">
+                        <h3>{notification.title}</h3>
+                        <p>{notification.message}</p>
+                        <span className="notification-time">{notification.time}</span>
+                      </div>
+                      <div className="notification-actions">
+                        {!notification.read && (
+                          <button
+                            className="mark-read-btn"
+                            onClick={() => markAsRead(notification.id)}
+                          >
+                            Mark as Read
+                          </button>
+                        )}
+                        {/* <button
+                          className="delete-btn"
+                          onClick={() => deleteNotification(notification.id)}
+                        >
+                          Delete
+                        </button> */}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
           </div>
         )}
 
@@ -187,12 +299,17 @@ const Dashboard = () => {
             <p>Account settings process.</p>
           </div>
         )}
+
+        
+        {activeSection === "Topic-hub" && (
+          <div className="box Topichub-section">
+            <h2>working</h2>
+            <p>Account</p>
+          </div>
+        )}
       </main>
     </div>
   );
 };
 
 export default Dashboard;
-
-
-

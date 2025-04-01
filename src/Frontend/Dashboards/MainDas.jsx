@@ -15,13 +15,45 @@ const MainDas = () => {
   const [announcementDescription, setAnnouncementDescription] = useState("");
 
   // State for attendance tracking
-  const [attendanceDate, setAttendanceDate] = useState('');
+  const [attendanceDate, setAttendanceDate] = useState("");
   const [attendees, setAttendees] = useState([
-    { id: 1, name: 'Abhishek K.C.', status: 'Not Marked' },
-    { id: 2, name: 'Kenab K.C.', status: 'Not Marked' },
-    { id: 3, name: 'Niraj Chaudhary', status: 'Not Marked' },
-    { id: 4, name: 'Suren Tamang', status: 'Not Marked' },
+    { id: 1, name: "Abhishek K.C.", status: "Not Marked" },
+    { id: 2, name: "Kenab K.C.", status: "Not Marked" },
+    { id: 3, name: "Niraj Chaudhary", status: "Not Marked" },
+    { id: 4, name: "Suren Tamang", status: "Not Marked" },
   ]);
+
+  // State for notifications
+  const [notifications, setNotifications] = useState([
+    {
+      id: 1,
+      title: "New Community Event",
+      message: "A new event has been scheduled for March 25, 2025.",
+      time: "2 hours ago",
+      read: false,
+    },
+    {
+      id: 2,
+      title: "Form Submission",
+      message: "Your form has been successfully submitted.",
+      time: "1 day ago",
+      read: true,
+    },
+    {
+      id: 3,
+      title: "Poll Update",
+      message: "New poll results are available for review.",
+      time: "3 hours ago",
+      read: false,
+    },
+  ]);
+
+  // State for settings
+  const [userSettings, setUserSettings] = useState({
+    fullName: "Abhishek K.C.",
+    email: "abhi@gmail.com",
+    password: "********", // Placeholder, actual password not shown
+  });
 
   const handleAddEvent = () => {
     alert("Event Added");
@@ -54,36 +86,36 @@ const MainDas = () => {
   };
 
   const handleAttendance = (id, newStatus) => {
-    setAttendees(attendees.map(attendee => 
-      attendee.id === id 
-        ? { ...attendee, status: newStatus }
-        : attendee
-    ));
+    setAttendees(
+      attendees.map((attendee) =>
+        attendee.id === id ? { ...attendee, status: newStatus } : attendee
+      )
+    );
   };
 
-  // New handler functions for buttons
   const handleSaveAttendance = () => {
     console.log("Saving attendance:", { date: attendanceDate, attendees });
     alert("Attendance Saved");
-    // Add your save logic here (e.g., API call)
   };
 
   const handleUpdateAttendance = () => {
     console.log("Updating attendance:", { date: attendanceDate, attendees });
     alert("Attendance Updated");
-    // Add your update logic here (e.g., API call)
   };
 
   const handleDeleteAttendance = () => {
-    setAttendees(attendees.map(attendee => ({ ...attendee, status: 'Not Marked' })));
-    setAttendanceDate('');
+    setAttendees(
+      attendees.map((attendee) => ({ ...attendee, status: "Not Marked" }))
+    );
+    setAttendanceDate("");
     alert("Attendance Cleared");
-    // Add your delete logic here
   };
 
   const handlePrint = () => {
-    const printContent = document.getElementById('attendance-table-printable').outerHTML;
-    const printWindow = window.open('', '_blank');
+    const printContent = document.getElementById(
+      "attendance-table-printable"
+    ).outerHTML;
+    const printWindow = window.open("", "_blank");
     printWindow.document.write(`
       <html>
         <head>
@@ -98,13 +130,45 @@ const MainDas = () => {
           </style>
         </head>
         <body>
-          <h2>Attendance Report - ${attendanceDate || 'No Date Selected'}</h2>
+          <h2>Attendance Report - ${attendanceDate || "No Date Selected"}</h2>
           ${printContent}
         </body>
       </html>
     `);
     printWindow.document.close();
     printWindow.print();
+  };
+
+  // Notification handlers
+  const markAsRead = (id) => {
+    setNotifications(
+      notifications.map((notif) =>
+        notif.id === id ? { ...notif, read: true } : notif
+      )
+    );
+  };
+
+  const deleteNotification = (id) => {
+    setNotifications(notifications.filter((notif) => notif.id !== id));
+  };
+
+  const clearAllNotifications = () => {
+    setNotifications([]);
+  };
+
+  // Settings handlers
+  const handleSettingsChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setUserSettings((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value,
+    }));
+  };
+
+  const handleSaveSettings = () => {
+    console.log("Saving settings:", userSettings);
+    alert("Settings Saved");
+    // Add API call to save settings to backend here
   };
 
   return (
@@ -130,6 +194,12 @@ const MainDas = () => {
           <li onClick={() => setActiveSection("Time Track")}>
             <span className="material-icons">hourglass_top</span> Time Track
           </li>
+          <li onClick={() => setActiveSection("Topic-hub")}>
+            <span className="material-icons">diversity_3</span> Topic Hub
+          </li>
+          <li onClick={() => setActiveSection("Notification")}>
+            <span className="material-icons">notifications</span> Notification
+          </li>
           <li onClick={() => setActiveSection("settings")}>
             <span className="material-icons">settings</span> Settings
           </li>
@@ -148,7 +218,18 @@ const MainDas = () => {
               href="https://fonts.googleapis.com/icon?family=Material+Icons"
             />
             <span className="material-icons">inbox</span>
-            <span className="material-icons">notifications</span>
+            <span
+              className="material-icons notification-icon"
+              onClick={() => setActiveSection("Notification")}
+              style={{ cursor: "pointer" }}
+            >
+              notifications
+              {notifications.filter((n) => !n.read).length > 0 && (
+                <span className="notification-badge">
+                  {notifications.filter((n) => !n.read).length}
+                </span>
+              )}
+            </span>
           </div>
         </header>
         <hr />
@@ -159,24 +240,32 @@ const MainDas = () => {
             <div className="box announcements">
               <h2>Announcement</h2>
               <div className="announcement-item">
-                <p><strong>UI Visuals</strong></p>
+                <p>
+                  <strong>UI Visuals</strong>
+                </p>
                 <p>
                   There is a sprinkler that appears to be broken shooting out
                   water in front of my home.
                 </p>
               </div>
               <div className="announcement-item">
-                <p><strong>Gaming</strong></p>
                 <p>
-                  From its medieval origins to the digital era, learn everything
-                  there is to know about the ubiquitous lorem ipsum passage.
+                  <strong>Gaming</strong>
+                </p>
+                <p>
+                  From its medieval origins to the digital era, learn
+                  everything there is to know about the ubiquitous lorem ipsum
+                  passage.
                 </p>
               </div>
               <div className="announcement-item">
-                <p><strong>AI Learner</strong></p>
                 <p>
-                  From its medieval origins to the digital era, learn everything
-                  there is to know about the ubiquitous lorem ipsum passage.
+                  <strong>AI Learner</strong>
+                </p>
+                <p>
+                  From its medieval origins to the digital era, learn
+                  everything there is to know about the ubiquitous lorem ipsum
+                  passage.
                 </p>
               </div>
             </div>
@@ -189,7 +278,12 @@ const MainDas = () => {
                   Morning
                 </label>
                 <label>
-                  <input type="radio" name="poll" value="Afternoon" defaultChecked />
+                  <input
+                    type="radio"
+                    name="poll"
+                    value="Afternoon"
+                    defaultChecked
+                  />
                   Afternoon
                 </label>
                 <label>
@@ -212,23 +306,19 @@ const MainDas = () => {
           </div>
         )}
 
+{/* --------------------- announcement -------------------- */}
+
         {activeSection === "announcement" && (
           <div className="announcements-container">
             <div className="box announcements">
               <h2>Announcement</h2>
               <div className="announcement-item">
-                <p><strong>UI Visuals</strong></p>
-                <p>There is a sprinkler that appears to be broken shooting out water in front of my home.</p>
-                <div className="announcement-buttons">
-                  <button className="update-button">Update</button>
-                  <button className="delete-button">Delete</button>
-                </div>
-              </div>
-              <div className="announcement-item">
-                <p><strong>Gaming</strong></p>
                 <p>
-                  From its medieval origins to the digital era, learn everything
-                  there is to know about the ubiquitous lorem ipsum passage.
+                  <strong>UI Visuals</strong>
+                </p>
+                <p>
+                  There is a sprinkler that appears to be broken shooting out
+                  water in front of my home.
                 </p>
                 <div className="announcement-buttons">
                   <button className="update-button">Update</button>
@@ -236,10 +326,27 @@ const MainDas = () => {
                 </div>
               </div>
               <div className="announcement-item">
-                <p><strong>AI Learner</strong></p>
                 <p>
-                  From its medieval origins to the digital era, learn everything
-                  there is to know about the ubiquitous lorem ipsum passage.
+                  <strong>Gaming</strong>
+                </p>
+                <p>
+                  From its medieval origins to the digital era, learn
+                  everything there is to know about the ubiquitous lorem ipsum
+                  passage.
+                </p>
+                <div className="announcement-buttons">
+                  <button className="update-button">Update</button>
+                  <button className="delete-button">Delete</button>
+                </div>
+              </div>
+              <div className="announcement-item">
+                <p>
+                  <strong>AI Learner</strong>
+                </p>
+                <p>
+                  From its medieval origins to the digital era, learn
+                  everything there is to know about the ubiquitous lorem ipsum
+                  passage.
                 </p>
                 <div className="announcement-buttons">
                   <button className="update-button">Update</button>
@@ -282,6 +389,8 @@ const MainDas = () => {
           </div>
         )}
 
+{/* ------------------ Form Table -------------------- */}
+
         {activeSection === "form" && (
           <div className="box form-section">
             <h2>Form Management</h2>
@@ -310,7 +419,9 @@ const MainDas = () => {
                         <span>Abhishek K.C.</span>
                       </td>
                       <td>
-                        <span className="status-badge status-accepted">Accepted</span>
+                        <span className="status-badge status-accepted">
+                          Accepted
+                        </span>
                       </td>
                       <td>abhi@Gmail.com</td>
                       <td>Great service!</td>
@@ -318,9 +429,15 @@ const MainDas = () => {
                         <div className="action-menu">
                           <button className="action-button">...</button>
                           <div className="status-dropdown">
-                            <button className="status-option status-accepted">Accepted</button>
-                            <button className="status-option status-pending">Pending</button>
-                            <button className="status-option status-rejected">Rejected</button>
+                            <button className="status-option status-accepted">
+                              Accepted
+                            </button>
+                            <button className="status-option status-pending">
+                              Pending
+                            </button>
+                            <button className="status-option status-rejected">
+                              Rejected
+                            </button>
                           </div>
                         </div>
                       </td>
@@ -334,7 +451,9 @@ const MainDas = () => {
                         <span>Rahul Rana</span>
                       </td>
                       <td>
-                        <span className="status-badge status-pending">Pending</span>
+                        <span className="status-badge status-pending">
+                          Pending
+                        </span>
                       </td>
                       <td>rana@Gmail.com</td>
                       <td>Waiting for more info</td>
@@ -342,9 +461,15 @@ const MainDas = () => {
                         <div className="action-menu">
                           <button className="action-button">...</button>
                           <div className="status-dropdown">
-                            <button className="status-option status-accepted">Accepted</button>
-                            <button className="status-option status-pending">Pending</button>
-                            <button className="status-option status-rejected">Rejected</button>
+                            <button className="status-option status-accepted">
+                              Accepted
+                            </button>
+                            <button className="status-option status-pending">
+                              Pending
+                            </button>
+                            <button className="status-option status-rejected">
+                              Rejected
+                            </button>
                           </div>
                         </div>
                       </td>
@@ -358,7 +483,9 @@ const MainDas = () => {
                         <span>Niraj thapa</span>
                       </td>
                       <td>
-                        <span className="status-badge status-rejected">Rejected</span>
+                        <span className="status-badge status-rejected">
+                          Rejected
+                        </span>
                       </td>
                       <td>thapa1@Gmail.com</td>
                       <td>Not eligible</td>
@@ -366,9 +493,15 @@ const MainDas = () => {
                         <div className="action-menu">
                           <button className="action-button">...</button>
                           <div className="status-dropdown">
-                            <button className="status-option status-accepted">Accepted</button>
-                            <button className="status-option status-pending">Pending</button>
-                            <button className="status-option status-rejected">Rejected</button>
+                            <button className="status-option status-accepted">
+                              Accepted
+                            </button>
+                            <button className="status-option status-pending">
+                              Pending
+                            </button>
+                            <button className="status-option status-rejected">
+                              Rejected
+                            </button>
                           </div>
                         </div>
                       </td>
@@ -382,7 +515,9 @@ const MainDas = () => {
                         <span>Anp gurung</span>
                       </td>
                       <td>
-                        <span className="status-badge status-accepted">Accepted</span>
+                        <span className="status-badge status-accepted">
+                          Accepted
+                        </span>
                       </td>
                       <td>anupe@Gmail.com</td>
                       <td>Perfect fit</td>
@@ -390,9 +525,15 @@ const MainDas = () => {
                         <div className="action-menu">
                           <button className="action-button">...</button>
                           <div className="status-dropdown">
-                            <button className="status-option status-accepted">Accepted</button>
-                            <button className="status-option status-pending">Pending</button>
-                            <button className="status-option status-rejected">Rejected</button>
+                            <button className="status-option status-accepted">
+                              Accepted
+                            </button>
+                            <button className="status-option status-pending">
+                              Pending
+                            </button>
+                            <button className="status-option status-rejected">
+                              Rejected
+                            </button>
                           </div>
                         </div>
                       </td>
@@ -406,7 +547,9 @@ const MainDas = () => {
                         <span>Kenab K.C.</span>
                       </td>
                       <td>
-                        <span className="status-badge status-accepted">Accepted</span>
+                        <span className="status-badge status-accepted">
+                          Accepted
+                        </span>
                       </td>
                       <td>Kenab@Gmail.com</td>
                       <td>Excellent candidate</td>
@@ -414,9 +557,15 @@ const MainDas = () => {
                         <div className="action-menu">
                           <button className="action-button">...</button>
                           <div className="status-dropdown">
-                            <button className="status-option status-accepted">Accepted</button>
-                            <button className="status-option status-pending">Pending</button>
-                            <button className="status-option status-rejected">Rejected</button>
+                            <button className="status-option status-accepted">
+                              Accepted
+                            </button>
+                            <button className="status-option status-pending">
+                              Pending
+                            </button>
+                            <button className="status-option status-rejected">
+                              Rejected
+                            </button>
                           </div>
                         </div>
                       </td>
@@ -427,6 +576,8 @@ const MainDas = () => {
             </div>
           </div>
         )}
+
+{/* ----------------------Calender --------------------------- */}
 
         {activeSection === "calendar" && (
           <div className="box calendar-section">
@@ -472,23 +623,22 @@ const MainDas = () => {
           </div>
         )}
 
-        {/* Updated Time Track Section with Buttons and Print */}
+{/* ------------------Time Track -------------------------- */}
+
         {activeSection === "Time Track" && (
           <div className="box time-track-section">
             <h2>Event Attendance Tracker</h2>
-            
-            {/* Date Input */}
+
             <div className="date-input">
               <label htmlFor="eventDate">Select Event Date: </label>
-              <input 
-                type="date" 
+              <input
+                type="date"
                 id="eventDate"
                 value={attendanceDate}
                 onChange={(e) => setAttendanceDate(e.target.value)}
               />
             </div>
 
-            {/* Attendance Table */}
             <table className="attendance-table" id="attendance-table-printable">
               <thead>
                 <tr>
@@ -506,21 +656,29 @@ const MainDas = () => {
                     <td>{attendee.status}</td>
                     <td className="no-print">
                       <div className="attendance-buttons">
-                        <button 
-                          className={`attendance-btn ${attendee.status === 'Absent' ? 'active' : ''}`}
-                          onClick={() => handleAttendance(attendee.id, 'Absent')}
+                        <button
+                          className={`attendance-btn ${
+                            attendee.status === "Absent" ? "active" : ""
+                          }`}
+                          onClick={() => handleAttendance(attendee.id, "Absent")}
                         >
                           x
                         </button>
-                        <button 
-                          className={`attendance-btn ${attendee.status === 'Present' ? 'active' : ''}`}
-                          onClick={() => handleAttendance(attendee.id, 'Present')}
+                        <button
+                          className={`attendance-btn ${
+                            attendee.status === "Present" ? "active" : ""
+                          }`}
+                          onClick={() =>
+                            handleAttendance(attendee.id, "Present")
+                          }
                         >
                           ✓
                         </button>
-                        <button 
-                          className={`attendance-btn ${attendee.status === 'Late' ? 'active' : ''}`}
-                          onClick={() => handleAttendance(attendee.id, 'Late')}
+                        <button
+                          className={`attendance-btn ${
+                            attendee.status === "Late" ? "active" : ""
+                          }`}
+                          onClick={() => handleAttendance(attendee.id, "Late")}
                         >
                           !
                         </button>
@@ -531,15 +689,23 @@ const MainDas = () => {
               </tbody>
             </table>
 
-            {/* Action Buttons */}
             <div className="attendance-actions">
-              <button className="action-btn save-btn" onClick={handleSaveAttendance}>
+              <button
+                className="action-btn save-btn"
+                onClick={handleSaveAttendance}
+              >
                 Save
               </button>
-              <button className="action-btn update-btn" onClick={handleUpdateAttendance}>
+              <button
+                className="action-btn update-btn"
+                onClick={handleUpdateAttendance}
+              >
                 Update
               </button>
-              <button className="action-btn delete-btn" onClick={handleDeleteAttendance}>
+              <button
+                className="action-btn delete-btn"
+                onClick={handleDeleteAttendance}
+              >
                 Delete
               </button>
               <button className="action-btn print-btn" onClick={handlePrint}>
@@ -549,6 +715,8 @@ const MainDas = () => {
           </div>
         )}
 
+{/* ---------------Feedback-------------------- */}
+
         {activeSection === "feedback" && (
           <div className="box feedback-section">
             <h2>Feedback</h2>
@@ -556,10 +724,125 @@ const MainDas = () => {
           </div>
         )}
 
+{/* ------------------Notification----------------------- */}
+
+        {activeSection === "Notification" && (
+          <div className="box notification-section">
+            <h2>Notifications</h2>
+            {notifications.length === 0 ? (
+              <p>No notifications available.</p>
+            ) : (
+              <>
+                <div className="notification-header">
+                  <span>
+                    You have {notifications.filter((n) => !n.read).length} unread
+                    notifications
+                  </span>
+                  <button
+                    className="clear-all-btn"
+                    onClick={clearAllNotifications}
+                  >
+                    Clear All
+                  </button>
+                </div>
+                <div className="notification-list">
+                  {notifications.map((notification) => (
+                    <div
+                      key={notification.id}
+                      className={`notification-item ${
+                        notification.read ? "read" : "unread"
+                      }`}
+                    >
+                      <div className="notification-content">
+                        <h3>{notification.title}</h3>
+                        <p>{notification.message}</p>
+                        <span className="notification-time">
+                          {notification.time}
+                        </span>
+                      </div>
+                      <div className="notification-actions">
+                        {!notification.read && (
+                          <button
+                            className="mark-read-btn"
+                            onClick={() => markAsRead(notification.id)}
+                          >
+                            Mark as Read
+                          </button>
+                        )}
+                        <button
+                          className="delete-btn"
+                          onClick={() => deleteNotification(notification.id)}
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
+        )}
+
+
+{/* ------------------------ Settings ----------------------- */}
+
+        {/* Updated Settings Section */}
         {activeSection === "settings" && (
           <div className="box settings-section">
             <h2>Settings</h2>
-            <p>Account settings process.</p>
+            <div className="settings-container">
+              <h3>Profile Settings</h3>
+              <div className="settings-form">
+                <div className="form-group">
+                  <label>Full Name:</label>
+                  <input
+                    type="text"
+                    name="fullName"
+                    value={userSettings.fullName}
+                    onChange={handleSettingsChange}
+                    placeholder="Enter your full name"
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Email:</label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={userSettings.email}
+                    onChange={handleSettingsChange}
+                    placeholder="Enter your email"
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Password:</label>
+                  <input
+                    type="password"
+                    name="password"
+                    value={userSettings.password}
+                    onChange={handleSettingsChange}
+                    placeholder="Enter new password"
+                  />
+                </div>
+              </div>
+              <div className="settings-actions">
+                <button
+                  className="action-btn save-btn"
+                  onClick={handleSaveSettings}
+                >
+                  Save Settings
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+{/* ---------------------Topic-Hub--------------------- */}
+
+        {activeSection === "Topic-hub" && (
+          <div className="box Topichub-section">
+            <h2>working</h2>
+            <p>Account</p>
           </div>
         )}
       </main>
