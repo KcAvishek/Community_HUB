@@ -1120,18 +1120,20 @@ textarea.form-1 {
 
 .notification-badge {
   position: absolute;
-  top: -5px;
-  right: -5px;
+  top: 0px;
+  right: -1px;
   background-color: #f44336;
   color: white;
   border-radius: 50%;
-  width: 18px;
-  height: 18px;
+  width: 12px;
+  height: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 12px;
 }
+
+/* ------------Notifications -------------------------------- */
 
 /* Notification Section */
 .notification-section {
@@ -1167,6 +1169,12 @@ textarea.form-1 {
   background-color: #fff;
 }
 
+.notification-content {
+  display: flex;
+  align-items: flex-start; /* Align items to the top for better dot positioning */
+  gap: 8px; /* Slightly reduced gap for a tighter look */
+}
+
 .notification-content h3 {
   margin: 0 0 5px;
   font-size: 16px;
@@ -1182,11 +1190,20 @@ textarea.form-1 {
   color: #999;
 }
 
+/* Red dot for unread notifications */
+.unread-dot {
+  width: 8px; /* Slightly smaller to match the "mini" style */
+  height: 8px;
+  background-color: #e74c3c; /* Match the red color used in the header */
+  border-radius: 50%;
+  display: inline-block;
+  margin-top: 4px; /* Aligns the dot vertically with the top of the text */
+}
+
 .notification-actions {
   display: flex;
   gap: 10px;
 }
-
 .mark-read-btn,
 .delete-btn,
 .clear-all-btn {
@@ -1225,7 +1242,7 @@ textarea.form-1 {
   background-color: #757575;
 }
 
-/* Settings Section */
+/* Settings Section (unchanged, included for completeness) */
 .settings-section {
   padding: 20px;
 }
@@ -1281,7 +1298,6 @@ textarea.form-1 {
   text-align: center;
 }
 
-/* Reusing action-btn and save-btn from previous sections */
 .action-btn.save-btn {
   background-color: #4caf50;
   color: white;
@@ -1295,4 +1311,172 @@ textarea.form-1 {
 
 .action-btn.save-btn:hover {
   background-color: #45a049;
+}
+
+/* ------------------topichub ------------------------- */
+
+/* Topic Hub (Discussion Forum) Section */
+.topic-hub-section {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.topic-hub-section h2 {
+  margin-top: 0;
+  font-size: 24px;
+  color: #2c3e50;
+}
+
+.discussion-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.new-question-form {
+  background-color: #f9f9f9;
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.new-question-form h3 {
+  margin: 0 0 10px;
+}
+
+.new-question-form form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.new-question-form input,
+.new-question-form textarea {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.new-question-form textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.new-question-form button {
+  padding: 10px;
+  background-color: #2ecc71;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.new-question-form button:hover {
+  background-color: #27ae60;
+}
+
+.question-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.question-item {
+  padding: 15px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  transition: box-shadow 0.3s;
+}
+
+.question-item:hover {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.question-header h3 {
+  margin: 0 0 5px;
+  color: #34495e;
+}
+
+.question-header p {
+  margin: 0;
+  font-size: 12px;
+  color: #7f8c8d;
+}
+
+.question-content p {
+  margin: 10px 0;
+}
+
+.view-replies-btn {
+  padding: 5px 10px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.view-replies-btn:hover {
+  background-color: #2980b9;
+}
+
+.replies-section {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #ecf0f1;
+  border-radius: 4px;
+}
+
+.reply-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.reply-item {
+  padding: 10px;
+  background-color: white;
+  border-radius: 4px;
+}
+
+.reply-item p {
+  margin: 5px 0;
+}
+
+.reply-item p:last-child {
+  font-size: 12px;
+  color: #7f8c8d;
+}
+
+.new-reply-form {
+  margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.new-reply-form textarea {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  min-height: 60px;
+  resize: vertical;
+}
+
+.new-reply-form button {
+  padding: 8px;
+  background-color: #e67e22;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.new-reply-form button:hover {
+  background-color: #d35400;
 }
