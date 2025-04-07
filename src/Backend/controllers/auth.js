@@ -98,6 +98,7 @@ const login = async (req, res) => {
     // Return a success response
     res.status(200).json({
       message: 'Login successful',
+      community: community_name ,
       role: user.role,
       token,
     });
@@ -108,4 +109,6 @@ const login = async (req, res) => {
 };
 
 module.exports = { register, login };
+
+
 

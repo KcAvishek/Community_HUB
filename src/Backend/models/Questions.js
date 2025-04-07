@@ -1,19 +1,13 @@
 const mongoose = require('mongoose');
 
-const discussionSchema = new mongoose.Schema({
-    title: { type: String, required: true },
-    content: { type: String, required: true },
-    community_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Community', required: true },
-    created_by: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-    created_at: { type: Date, default: Date.now },
-    replies: [
-      {
-        user_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-        content: { type: String },
-        timestamp: { type: Date, default: Date.now }
-      }
-    ]
-  });
-  
-  const Discussion = mongoose.model('Discussion', discussionSchema);
-  
+const questionSchema = new mongoose.Schema({
+  title:       { type: String, required: true },
+  content:     { type: String, required: true },
+  author:      { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  community_id:{ type: mongoose.Schema.Types.ObjectId, ref: 'Community', required: true }, // For community-specific discussions
+  tags:        [String], // Optional tags
+  createdAt:   { type: Date, default: Date.now },
+  updatedAt:   { type: Date }
+});
+
+module.exports = mongoose.model('Question', questionSchema);
