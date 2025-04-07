@@ -1,4 +1,3 @@
-
 const mongoose = require('mongoose');
 const Announcement = require('../models/Announcements');
 const bcrypt = require('bcryptjs');
@@ -8,14 +7,14 @@ const createAnnouncement = async (req, res) => {
   try {
     console.log("Request Body:", req.body); // Log incoming request
 
-    const { title, content, community_id, created_by, expires_at } = req.body;
+    const { title, content, created_by, expires_at } = req.body;
 
     // Ensure all required fields are present
-    if (!title || !content || !community_id || !created_by || !expires_at) {
+    if (!title || !content || !created_by || !expires_at) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
-    const announcement = new Announcement({ title, content, community_id, created_by, expires_at });
+    const announcement = new Announcement({ title, content, created_by, expires_at });
     await announcement.save();
 
     res.status(201).json({ message: "Announcement created successfully", announcement });
@@ -27,7 +26,7 @@ const createAnnouncement = async (req, res) => {
 
 const getAnnouncements = async (req, res) => {
   try {
-    const announcements = await Announcement.find().populate('community_id').populate('created_by');
+    const announcements = await Announcement.find(); // removed .populate
     res.status(200).json(announcements);
   } catch (error) {
     res.status(500).json({ message: 'Failed to fetch announcements' });
@@ -36,7 +35,7 @@ const getAnnouncements = async (req, res) => {
 
 const getAnnouncementById = async (req, res) => {
   try {
-    const announcement = await Announcement.findById(req.params.id).populate('community_id').populate('created_by');
+    const announcement = await Announcement.findById(req.params.id);
     if (!announcement) return res.status(404).json({ message: 'Announcement not found' });
     res.status(200).json(announcement);
   } catch (error) {
@@ -63,7 +62,6 @@ const updateAnnouncement = async (req, res) => {
   }
 };
 
-
 const deleteAnnouncement = async (req, res) => {
   try {
     const deletedAnnouncement = await Announcement.findByIdAndDelete(req.params.id);
@@ -74,4 +72,4 @@ const deleteAnnouncement = async (req, res) => {
   }
 };
 
-module.exports = { createAnnouncement, getAnnouncements, getAnnouncementById, updateAnnouncement, deleteAnnouncement };
+module.exports = {createAnnouncement,getAnnouncements,getAnnouncementById,updateAnnouncement,deleteAnnouncement};

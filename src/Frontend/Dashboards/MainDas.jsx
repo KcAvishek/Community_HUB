@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import "../Dashboard.css";
+import AnnouncementSection from "./AnnouncementSection"; 
 
 const MainDas = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -9,11 +10,9 @@ const MainDas = () => {
   const [description, setDescription] = useState("");
   const [activeSection, setActiveSection] = useState("dashboard");
 
-  // State for the modal and announcement fields
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [announcementTitle, setAnnouncementTitle] = useState("");
-  const [announcementDescription, setAnnouncementDescription] = useState("");
 
+
+  
   // State for attendance tracking
   const [attendanceDate, setAttendanceDate] = useState("");
   const [attendees, setAttendees] = useState([
@@ -22,69 +21,6 @@ const MainDas = () => {
     { id: 3, name: "Niraj Chaudhary", status: "Not Marked" },
     { id: 4, name: "Suren Tamang", status: "Not Marked" },
   ]);
-
-  // State for notifications
-  const [notifications, setNotifications] = useState([
-    {
-      id: 1,
-      title: "New Community Event",
-      message: "A new event has been scheduled for March 25, 2025.",
-      time: "2 hours ago",
-      read: false,
-    },
-    {
-      id: 2,
-      title: "Form Submission",
-      message: "Your form has been successfully submitted.",
-      time: "1 day ago",
-      read: true,
-    },
-    {
-      id: 3,
-      title: "Poll Update",
-      message: "New poll results are available for review.",
-      time: "3 hours ago",
-      read: false,
-    },
-  ]);
-
-  // State for settings
-  const [userSettings, setUserSettings] = useState({
-    fullName: "Abhishek K.C.",
-    email: "abhi@gmail.com",
-    password: "********", // Placeholder, actual password not shown
-  });
-
-  const handleAddEvent = () => {
-    alert("Event Added");
-  };
-
-  const handleUpdateEvent = () => {
-    alert("Event Updated");
-  };
-
-  const handleDeleteEvent = () => {
-    alert("Event Deleted");
-  };
-
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setAnnouncementTitle("");
-    setAnnouncementDescription("");
-  };
-
-  const handleAddAnnouncement = () => {
-    console.log("New Announcement:", {
-      title: announcementTitle,
-      description: announcementDescription,
-    });
-    closeModal();
-  };
-
   const handleAttendance = (id, newStatus) => {
     setAttendees(
       attendees.map((attendee) =>
@@ -139,6 +75,31 @@ const MainDas = () => {
     printWindow.print();
   };
 
+  // State for notifications
+  const [notifications, setNotifications] = useState([
+    {
+      id: 1,
+      title: "New Community Event",
+      message: "A new event has been scheduled for March 25, 2025.",
+      time: "2 hours ago",
+      read: false,
+    },
+    {
+      id: 2,
+      title: "Form Submission",
+      message: "Your form has been successfully submitted.",
+      time: "1 day ago",
+      read: true,
+    },
+    {
+      id: 3,
+      title: "Poll Update",
+      message: "New poll results are available for review.",
+      time: "3 hours ago",
+      read: false,
+    },
+  ]);
+
   // Notification handlers
   const markAsRead = (id) => {
     setNotifications(
@@ -156,7 +117,29 @@ const MainDas = () => {
     setNotifications([]);
   };
 
-  // Settings handlers
+
+
+  //calendar data
+  const handleAddEvent = () => {
+    alert("Event Added");
+  };
+
+  const handleUpdateEvent = () => {
+    alert("Event Updated");
+  };
+
+  const handleDeleteEvent = () => {
+    alert("Event Deleted");
+  }; 
+  
+  // State for settings
+  const [userSettings, setUserSettings] = useState({
+    fullName: "Abhishek K.C.",
+    email: "abhi@gmail.com",
+    password: "********", // Placeholder, actual password not shown
+  });
+
+// Settings handlers
   const handleSettingsChange = (e) => {
     const { name, value, type, checked } = e.target;
     setUserSettings((prev) => ({
@@ -308,86 +291,7 @@ const MainDas = () => {
 
 {/* --------------------- announcement -------------------- */}
 
-        {activeSection === "announcement" && (
-          <div className="announcements-container">
-            <div className="box announcements">
-              <h2>Announcement</h2>
-              <div className="announcement-item">
-                <p>
-                  <strong>UI Visuals</strong>
-                </p>
-                <p>
-                  There is a sprinkler that appears to be broken shooting out
-                  water in front of my home.
-                </p>
-                <div className="announcement-buttons">
-                  <button className="update-button">Update</button>
-                  <button className="delete-button">Delete</button>
-                </div>
-              </div>
-              <div className="announcement-item">
-                <p>
-                  <strong>Gaming</strong>
-                </p>
-                <p>
-                  From its medieval origins to the digital era, learn
-                  everything there is to know about the ubiquitous lorem ipsum
-                  passage.
-                </p>
-                <div className="announcement-buttons">
-                  <button className="update-button">Update</button>
-                  <button className="delete-button">Delete</button>
-                </div>
-              </div>
-              <div className="announcement-item">
-                <p>
-                  <strong>AI Learner</strong>
-                </p>
-                <p>
-                  From its medieval origins to the digital era, learn
-                  everything there is to know about the ubiquitous lorem ipsum
-                  passage.
-                </p>
-                <div className="announcement-buttons">
-                  <button className="update-button">Update</button>
-                  <button className="delete-button">Delete</button>
-                </div>
-              </div>
-            </div>
-            <button className="add-button" onClick={openModal}>
-              Add Announcement
-            </button>
-          </div>
-        )}
-
-        {isModalOpen && (
-          <div className="modal-overlay">
-            <div className="modal">
-              <h3>Add Announcement</h3>
-              <div className="modal-input">
-                <label>Title:</label>
-                <input
-                  type="text"
-                  placeholder="Enter title"
-                  value={announcementTitle}
-                  onChange={(e) => setAnnouncementTitle(e.target.value)}
-                />
-              </div>
-              <div className="modal-input">
-                <label>Description:</label>
-                <textarea
-                  placeholder="Enter description"
-                  value={announcementDescription}
-                  onChange={(e) => setAnnouncementDescription(e.target.value)}
-                />
-              </div>
-              <div className="modal-actions">
-                <button onClick={closeModal}>Cancel</button>
-                <button onClick={handleAddAnnouncement}>OK</button>
-              </div>
-            </div>
-          </div>
-        )}
+{activeSection === "announcement" && <AnnouncementSection activeSection={activeSection} />}
 
 {/* ------------------ Form Table -------------------- */}
 
@@ -715,14 +619,6 @@ const MainDas = () => {
           </div>
         )}
 
-{/* ---------------Feedback-------------------- */}
-
-        {activeSection === "feedback" && (
-          <div className="box feedback-section">
-            <h2>Feedback</h2>
-            <p>View or submit feedback process.</p>
-          </div>
-        )}
 
 {/* ------------------Notification----------------------- */}
 
