@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import "../Dashboard.css";
-import AnnouncementSection from "./AnnouncementSection"; 
+import AnnouncementSection from "./AnnouncementSection";
+import CalendarSection from "./CalendarSection";
 
 const MainDas = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -117,20 +118,6 @@ const MainDas = () => {
     setNotifications([]);
   };
 
-
-
-  //calendar data
-  const handleAddEvent = () => {
-    alert("Event Added");
-  };
-
-  const handleUpdateEvent = () => {
-    alert("Event Updated");
-  };
-
-  const handleDeleteEvent = () => {
-    alert("Event Deleted");
-  }; 
   
   // State for settings
   const [userSettings, setUserSettings] = useState({
@@ -483,50 +470,7 @@ const MainDas = () => {
 
 {/* ----------------------Calender --------------------------- */}
 
-        {activeSection === "calendar" && (
-          <div className="box calendar-section">
-            <h2>Events</h2>
-            <div className="calendar-container">
-              <div className="calendar-wrapper">
-                <Calendar onChange={setSelectedDate} value={selectedDate} />
-              </div>
-              <div className="calendar-form">
-                <div className="form-group">
-                  <label>Date:</label>
-                  <input
-                    type="text"
-                    value={selectedDate.toLocaleDateString()}
-                    disabled
-                    className="date-input"
-                  />
-                </div>
-                <div className="form-group">
-                  <label>Event:</label>
-                  <input
-                    type="text"
-                    placeholder="Enter event name"
-                    className="event-input"
-                  />
-                </div>
-                <div className="form-buttons">
-                  <button className="add-event-button">Add Event</button>
-                  <button className="update-event-button">Update Event</button>
-                  <button className="delete-event-button">Delete Event</button>
-                </div>
-              </div>
-            </div>
-            <div className="current-date-events">
-              <p>Current Date: {selectedDate.toLocaleDateString()}</p>
-              <div className="event-list">
-                <h3>Events on this Date:</h3>
-                <ul>
-                  <li>No events for this date.</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        )}
-
+{activeSection === "calendar" && <CalendarSection activeSection={activeSection}/>}
 {/* ------------------Time Track -------------------------- */}
 
         {activeSection === "Time Track" && (

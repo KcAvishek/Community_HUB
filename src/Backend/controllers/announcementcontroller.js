@@ -7,14 +7,14 @@ const createAnnouncement = async (req, res) => {
   try {
     console.log("Request Body:", req.body); // Log incoming request
 
-    const { title, content, created_by, expires_at } = req.body;
+    const { title, content, expires_at } = req.body;
 
     // Ensure all required fields are present
-    if (!title || !content || !created_by || !expires_at) {
+    if (!title || !content || !expires_at) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
-    const announcement = new Announcement({ title, content, created_by, expires_at });
+    const announcement = new Announcement({ title, content, expires_at });
     await announcement.save();
 
     res.status(201).json({ message: "Announcement created successfully", announcement });

@@ -1,24 +1,3 @@
-// import { create } from 'zustand';
-// 
-// const useAuthStore = create((set) => {
-//   // Get auth data from localStorage 
-//   const token = localStorage.getItem('authToken');
-//   const role = token ? 'some role from localStorage' : null; // Replace with actual role from localStorage
-//   const community = token ? 'some community from localStorage' : null; // Replace with actual community from localStorage
-// 
-//   return {
-//     token,
-//     role,
-//     community,
-//     setAuthData: ({ token, role, community }) => set({ token, role, community }),
-//     clearAuthData: () => set({ token: null, role: null, community: null }),
-//   };
-// });
-// 
-// export default useAuthStore;
-// 
-
-
 import { create } from 'zustand';
 
 const useAuthStore = create((set) => {

@@ -9,7 +9,7 @@ import { Toaster } from "sonner";
 const App = () => {
   return (
     <Router>
-      <Toaster position="top-center" richColors />
+      <Toaster position="top-right" richColors />
       <Routes>
         <Route path="/dashboard/main" element={<MainDas />} /> 
         <Route path="/dashboard" element={<Dashboard />} />
