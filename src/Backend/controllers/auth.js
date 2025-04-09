@@ -100,6 +100,7 @@ const login = async (req, res) => {
       message: 'Login successful',
       community: community_name ,
       role: user.role,
+      user_id: user._id,
       token,
     });
   } catch (err) {
@@ -109,6 +110,8 @@ const login = async (req, res) => {
 };
 
 module.exports = { register, login };
+
+
 
 
 
