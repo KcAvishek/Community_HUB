@@ -181,11 +181,96 @@
 
 
 
+// 
+// 
+// import { create } from 'zustand';
+// 
+// // Utility function to safely parse data from localStorage
+// const safeParse = (key) => {
+//   try {
+//     const item = localStorage.getItem(key);
+//     return item && item !== "undefined" ? JSON.parse(item) : null;
+//   } catch (err) {
+//     console.error(`Error parsing ${key}:`, err);
+//     return null;
+//   }
+// };
+// 
+// // Create the Zustand store
+// const useAuthStore = create((set) => {
+//   const token = localStorage.getItem('authToken');
+//   const role = token ? localStorage.getItem('userRole') : null;
+//   const user = token ? safeParse('userData') : null;  // user stores the _id of the logged-in user
+//   const community = token ? safeParse('communityData') : null;
+//   const communityName = token ? localStorage.getItem('communityName') : null;
+// 
+//   // Debugging: log the initial auth data when the store is created
+//   console.log("Initial token:", token);
+//   console.log("Initial role:", role);
+//   console.log("Initial user data:", user);
+//   console.log("Initial community data:", community);
+//   console.log("Initial community name:", communityName);
+// 
+//   return {
+//     token,
+//     role,
+//     user,  // This stores the _id of the user
+//     community,
+//     communityName,
+// 
+//     // Action to set authentication data
+//     setAuthData: ({ token, role, user, community, communityName }) => {
+//       // Store authentication data in localStorage
+//       localStorage.setItem('authToken', token);
+//       localStorage.setItem('userRole', role);
+//       localStorage.setItem('userData', JSON.stringify(user));  // Store _id of user
+//       localStorage.setItem('communityData', JSON.stringify(community));
+//       localStorage.setItem('communityName', communityName);
+// 
+//       // Debugging: log the auth data being set in Zustand
+//       console.log("Auth data set in Zustand and localStorage:");
+//       console.log("New token:", token);
+//       console.log("New role:", role);
+//       console.log("New user data (user _id):", user);
+//       console.log("New community data:", community);
+//       console.log("New community name:", communityName);
+// 
+//       // Update Zustand store state
+//       set({ token, role, user, community, communityName });
+//     },
+// 
+//     // Action to clear authentication data
+//     clearAuthData: () => {
+//       // Clear authentication data from localStorage
+//       localStorage.removeItem('authToken');
+//       localStorage.removeItem('userRole');
+//       localStorage.removeItem('userData');
+//       localStorage.removeItem('communityData');
+//       localStorage.removeItem('communityName');
+// 
+//       // Debugging: log the auth data being cleared
+//       console.log("Auth data cleared from Zustand and localStorage");
+// 
+//       // Reset Zustand store state
+//       set({
+//         token: null,
+//         role: null,
+//         user: null,  // Reset user data (_id)
+//         community: null,
+//         communityName: null,
+//       });
+//     },
+//   };
+// });
+// 
+// export default useAuthStore;
+
+
+
 
 
 import { create } from 'zustand';
 
-// Utility function to safely parse data from localStorage
 const safeParse = (key) => {
   try {
     const item = localStorage.getItem(key);
@@ -196,15 +281,14 @@ const safeParse = (key) => {
   }
 };
 
-// Create the Zustand store
 const useAuthStore = create((set) => {
   const token = localStorage.getItem('authToken');
   const role = token ? localStorage.getItem('userRole') : null;
-  const user = token ? safeParse('userData') : null;  // user stores the _id of the logged-in user
+  // Ensure user is an object with _id
+  const user = token ? safeParse('userData') : null; // This should be an object like { _id: "..." }
   const community = token ? safeParse('communityData') : null;
   const communityName = token ? localStorage.getItem('communityName') : null;
 
-  // Debugging: log the initial auth data when the store is created
   console.log("Initial token:", token);
   console.log("Initial role:", role);
   console.log("Initial user data:", user);
@@ -214,48 +298,41 @@ const useAuthStore = create((set) => {
   return {
     token,
     role,
-    user,  // This stores the _id of the user
+    user, // This should be an object
     community,
     communityName,
 
-    // Action to set authentication data
     setAuthData: ({ token, role, user, community, communityName }) => {
-      // Store authentication data in localStorage
       localStorage.setItem('authToken', token);
       localStorage.setItem('userRole', role);
-      localStorage.setItem('userData', JSON.stringify(user));  // Store _id of user
+      // Ensure user is stored as an object
+      localStorage.setItem('userData', JSON.stringify(user)); // user should be an object here
       localStorage.setItem('communityData', JSON.stringify(community));
       localStorage.setItem('communityName', communityName);
 
-      // Debugging: log the auth data being set in Zustand
       console.log("Auth data set in Zustand and localStorage:");
       console.log("New token:", token);
       console.log("New role:", role);
-      console.log("New user data (user _id):", user);
+      console.log("New user data:", user);
       console.log("New community data:", community);
       console.log("New community name:", communityName);
 
-      // Update Zustand store state
       set({ token, role, user, community, communityName });
     },
 
-    // Action to clear authentication data
     clearAuthData: () => {
-      // Clear authentication data from localStorage
       localStorage.removeItem('authToken');
       localStorage.removeItem('userRole');
       localStorage.removeItem('userData');
       localStorage.removeItem('communityData');
       localStorage.removeItem('communityName');
 
-      // Debugging: log the auth data being cleared
       console.log("Auth data cleared from Zustand and localStorage");
 
-      // Reset Zustand store state
       set({
         token: null,
         role: null,
-        user: null,  // Reset user data (_id)
+        user: null,
         community: null,
         communityName: null,
       });

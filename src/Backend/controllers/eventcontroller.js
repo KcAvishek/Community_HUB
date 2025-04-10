@@ -6,10 +6,7 @@ const createEvent = async (req, res) => {
   try {
     const { title, description, date, created_by } = req.body;
 
-    // Create new event document
     const event = new Event({ title, description, date, created_by });
-
-    // Save event to database
     await event.save();
 
     return res.status(201).json({
@@ -26,7 +23,7 @@ const createEvent = async (req, res) => {
 const getAllEvents = async (req, res) => {
   try {
     const events = await Event.find()
-      .populate('created_by'); // Populate the user who created the event
+      .populate('created_by');
 
     return res.status(200).json({
       message: "Events fetched successfully",
@@ -42,7 +39,7 @@ const getAllEvents = async (req, res) => {
 const getEventById = async (req, res) => {
   try {
     const event = await Event.findById(req.params.id)
-      .populate('created_by'); // Populate the user who created the event
+      .populate('created_by');
 
     if (!event) {
       return res.status(404).json({ message: "Event not found" });
@@ -63,12 +60,18 @@ const updateEvent = async (req, res) => {
   try {
     const { title, description, date, created_by } = req.body;
 
-    // Update the event by ID
+    // Only update fields that are provided in the request body
+    const updateFields = {};
+    if (title !== undefined) updateFields.title = title;
+    if (description !== undefined) updateFields.description = description;
+    if (date !== undefined) updateFields.date = date;
+    if (created_by !== undefined) updateFields.created_by = created_by;
+
     const updatedEvent = await Event.findByIdAndUpdate(
       req.params.id,
-      { title, description, date, created_by },
-      { new: true } // Return the updated document
-    );
+      updateFields,
+      { new: true }
+    ).populate('created_by'); // Optional: populate created_by for consistency
 
     if (!updatedEvent) {
       return res.status(404).json({ message: "Event not found" });
@@ -76,7 +79,7 @@ const updateEvent = async (req, res) => {
 
     return res.status(200).json({
       message: "Event updated successfully",
-      event: updatedEvent,
+      updatedEvent, // Match frontend expectation
     });
   } catch (err) {
     console.error(err);
@@ -102,3 +105,6 @@ const deleteEvent = async (req, res) => {
 };
 
 module.exports = { createEvent, getAllEvents, getEventById, updateEvent, deleteEvent };
+
+
+
