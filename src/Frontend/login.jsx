@@ -129,7 +129,7 @@ import { useLocation, Link, useNavigate } from 'react-router-dom';
 import { LoginInputField } from './LoginInputField';
 import axios from 'axios';
 import { toast } from "sonner";
-import useAuthStore from './Store/authStore'; // ✅ Import Zustand store
+import useAuthStore from './Store/authStore'; //  Import Zustand store
 
 const Login = () => {
   const location = useLocation();
@@ -142,7 +142,7 @@ const Login = () => {
 
   const navigate = useNavigate();
 
-  // ✅ Zustand function to set auth data
+  // Zustand function to set auth data
   const setAuthData = useAuthStore((state) => state.setAuthData);
 
   // Reset communityName when the role changes

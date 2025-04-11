@@ -1,8 +1,8 @@
-
-
 import React, { useState, useEffect } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
+import JoinCommunityForm from "./JoinCommunityForm";
+import TopicHub from "./TopicHub";
 import "./Dashboard.css";
 
 const Dashboard = () => {
@@ -31,84 +31,7 @@ const Dashboard = () => {
     },
   ]);
 
-  // State for discussion forum (Topic Hub)
-  const [questions, setQuestions] = useState([]);
-  const [newQuestion, setNewQuestion] = useState({ title: "", content: "" });
-  const [selectedQuestion, setSelectedQuestion] = useState(null);
-  const [newReply, setNewReply] = useState("");
-
-  // Fetch questions (simulated API call, replace with real fetch)
-  useEffect(() => {
-    const fetchQuestions = async () => {
-      // Replace with actual API call: fetch("/api/questions")
-      const mockQuestions = [
-        {
-          _id: "1",
-          title: "What’s your favorite programming language?",
-          content: "I’m curious to know what everyone prefers!",
-          author: { username: "Abhishek" },
-          createdAt: new Date(),
-          replies: [
-            { _id: "r1", content: "JavaScript!", author: { username: "User1" }, createdAt: new Date() },
-          ],
-        },
-      ];
-      setQuestions(mockQuestions);
-    };
-    if (activeSection === "Topic-hub") fetchQuestions();
-  }, [activeSection]);
-
-  // Handle marking a notification as read
-  const markAsRead = (id) => {
-    setNotifications(
-      notifications.map((notif) =>
-        notif.id === id ? { ...notif, read: true } : notif
-      )
-    );
-  };
-
-  // Handle deleting a notification
-  const deleteNotification = (id) => {
-    setNotifications(notifications.filter((notif) => notif.id !== id));
-  };
-
-  // Handle clearing all notifications
-  const clearAllNotifications = () => {
-    setNotifications([]);
-  };
-
-  // Handle posting a new question
-  const handlePostQuestion = (e) => {
-    e.preventDefault();
-    const question = {
-      _id: String(Date.now()), // Temporary ID, replace with backend-generated ID
-      title: newQuestion.title,
-      content: newQuestion.content,
-      author: { username: "Abhishek" }, // Replace with authenticated user
-      createdAt: new Date(),
-      replies: [],
-    };
-    setQuestions([question, ...questions]);
-    setNewQuestion({ title: "", content: "" });
-  };
-
-  // Handle posting a reply
-  const handlePostReply = (e, questionId) => {
-    e.preventDefault();
-    const reply = {
-      _id: String(Date.now()), // Temporary ID
-      content: newReply,
-      author: { username: "Abhishek" }, // Replace with authenticated user
-      createdAt: new Date(),
-    };
-    setQuestions(
-      questions.map((q) =>
-        q._id === questionId ? { ...q, replies: [...q.replies, reply] } : q
-      )
-    );
-    setNewReply("");
-  };
-
+  
   return (
     <div className="dashboard">
       <aside className="sidebar">
@@ -232,56 +155,10 @@ const Dashboard = () => {
           </div>
         )}
 
-        {activeSection === "form" && (
-          <div className="box form-section">
-            <h2 className="form-header">Community Form</h2>
-            <form>
-              <div className="form1">
-                <label>
-                  Community Name:
-                  <select className="form-1">
-                    <option value="">Select a community</option>
-                    <option value="UIvisuals">Uivisuals</option>
-                    <option value="AI Learners">AI-learns</option>
-                    <option value="Gaming Dev">Gaming Dev</option>
-                  </select>
-                </label>
-              </div>
-              <div className="form1">
-                <label>
-                  Name:
-                  <input
-                    className="form-1"
-                    type="text"
-                    placeholder="Enter your name"
-                  />
-                </label>
-              </div>
-              <div className="form2">
-                <label>
-                  Email:
-                  <input
-                    className="form-1"
-                    type="email"
-                    placeholder="Enter your email"
-                  />
-                </label>
-              </div>
-              <div className="form3">
-                <label>
-                  <div className="h3">Feedback:</div>
-                  <textarea
-                    className="form-1"
-                    placeholder="Why did you choose this community?"
-                  ></textarea>
-                </label>
-              </div>
-              <div className="form-button">
-                <button type="submit">Submit</button>
-              </div>
-            </form>
-          </div>
-        )}
+      
+
+{activeSection === "form" && <JoinCommunityForm activeSection={activeSection} />}
+
 
         {activeSection === "calendar" && (
           <div className="box calendar-section">
@@ -346,103 +223,17 @@ const Dashboard = () => {
           </div>
         )}
 
-        {activeSection === "Topic-hub" && (
-          <div className="topic-hub-section">
-            <h2>Topic HUB</h2>
-            <div className="discussion-container">
-              {/* Post a New Question */}
-              <div className="new-question-form">
-                
-                <form onSubmit={handlePostQuestion}>
-                  <input
-                    type="text"
-                    placeholder="Question Title"
-                    value={newQuestion.title}
-                    onChange={(e) =>
-                      setNewQuestion({ ...newQuestion, title: e.target.value })
-                    }
-                    required
-                  />
-                  <textarea
-                    placeholder="Describe your question..."
-                    value={newQuestion.content}
-                    onChange={(e) =>
-                      setNewQuestion({ ...newQuestion, content: e.target.value })
-                    }
-                    required
-                  ></textarea>
-                  <button type="submit">Post Question</button>
-                </form>
-              </div>
-
-              {/* Question List */}
-              <div className="question-list">
-                {questions.length === 0 ? (
-                  <p>No questions yet. Be the first to ask!</p>
-                ) : (
-                  questions.map((question) => (
-                    <div key={question._id} className="question-item">
-                      <div className="question-header">
-                        <h3>{question.title}</h3>
-                        <p>
-                          Posted by {question.author.username} on{" "}
-                          {new Date(question.createdAt).toLocaleDateString()}
-                        </p>
-                      </div>
-                      <div className="question-content">
-                        <p>{question.content}</p>
-                      </div>
-                      <button
-                        className="view-replies-btn"
-                        onClick={() =>
-                          setSelectedQuestion(
-                            selectedQuestion?._id === question._id ? null : question
-                          )
-                        }
-                      >
-                        {selectedQuestion?._id === question._id
-                          ? "Hide Replies"
-                          : `View Replies (${question.replies.length})`}
-                      </button>
-
-                      {/* Replies Section */}
-                      {selectedQuestion?._id === question._id && (
-                        <div className="replies-section">
-                          <div className="reply-list">
-                            {question.replies.map((reply) => (
-                              <div key={reply._id} className="reply-item">
-                                <p>{reply.content}</p>
-                                <p>
-                                  - {reply.author.username} (
-                                  {new Date(reply.createdAt).toLocaleDateString()})
-                                </p>
-                              </div>
-                            ))}
-                          </div>
-                          <form
-                            className="new-reply-form"
-                            onSubmit={(e) => handlePostReply(e, question._id)}
-                          >
-                            <textarea
-                              placeholder="Write a reply..."
-                              value={newReply}
-                              onChange={(e) => setNewReply(e.target.value)}
-                              required
-                            ></textarea>
-                            <button type="submit">Post Reply</button>
-                          </form>
-                        </div>
-                      )}
-                    </div>
-                  ))
-                )}
-              </div>
-            </div>
-          </div>
-        )}
+        {activeSection === "Topic-hub" && <TopicHub activeSection={activeSection} />}
       </main>
     </div>
   );
 };
 
 export default Dashboard;
+
+
+
+
+
+
+
