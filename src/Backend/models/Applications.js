@@ -1,13 +1,12 @@
 const mongoose = require('mongoose');
 
 const applicationSchema = new mongoose.Schema({
-    user_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-    community_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Community', required: true },
-    status: { type: String, enum: ['pending', 'approved', 'rejected'], default: 'pending' },
-    submitted_at: { type: Date, default: Date.now },
-    reviewed_by: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-    reviewed_at: { type: Date }
-  });
-  
-  const Application = mongoose.model('Application', applicationSchema);
-  
+  community_name: { type: String, required: true },
+  username: { type: String, required: true },
+  email: { type: String, required: true },
+  feedback: { type: String, required: true },
+  status: { type: String,enum: ['pending', 'approved', 'rejected'],default: 'pending'},
+  user_id: {type: mongoose.Schema.Types.ObjectId,ref: 'User',required: true}
+}, { timestamps: true });
+
+module.exports = mongoose.model('Application', applicationSchema);

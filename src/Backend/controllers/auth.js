@@ -54,7 +54,7 @@ const login = async (req, res) => {
 
     // Compare the plain text password with the stored password
     if (password !== user.password) {
-      return res.status(401).json({ message: 'Invalid credentials' });
+      return res.status(401).json({ message: 'Invalid password' });
     }
 
     // If the role is 'leader', validate the community_name
@@ -97,10 +97,12 @@ const login = async (req, res) => {
 
     // Return a success response
     res.status(200).json({
-      message: 'Login successful',
+      message: 'Login successfully',
       community: community_name ,
       role: user.role,
       user_id: user._id,
+      email: user.email,
+      username: user.username,
       token,
     });
   } catch (err) {

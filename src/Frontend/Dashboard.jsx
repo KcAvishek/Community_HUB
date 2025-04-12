@@ -1,13 +1,20 @@
 import React, { useState, useEffect } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
+import useAuthStore from "./Store/authStore";
 import JoinCommunityForm from "./JoinCommunityForm";
 import TopicHub from "./TopicHub";
 import "./Dashboard.css";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 const Dashboard = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [activeSection, setActiveSection] = useState("dashboard");
+  const [showLogoutDialog, setShowLogoutDialog] = useState(false);
+  const { clearAuthData } = useAuthStore();
+  const navigate = useNavigate();
+
 
   // State for notifications
   const [notifications, setNotifications] = useState([
@@ -30,7 +37,22 @@ const Dashboard = () => {
       read: false,
     },
   ]);
+// Logout handlers
+const handleLogoutClick = () => {
+  setShowLogoutDialog(true); // Show the dialog
+};
 
+const confirmLogout = () => {
+  clearAuthData(); // Clear auth data
+  navigate("/");
+  toast.success("Logged out successfully!"); // Show toast
+   // Redirect to role page
+  setShowLogoutDialog(false); // Close dialog
+};
+
+const cancelLogout = () => {
+  setShowLogoutDialog(false); // Close dialog, stay on page
+};
   
   return (
     <div className="dashboard">
@@ -56,7 +78,7 @@ const Dashboard = () => {
             <span className="material-icons">settings</span> Settings
           </li>
         </ul>
-        <div className="logout">
+        <div className="logout" onClick={handleLogoutClick} style={{ cursor: "pointer" }}>
           <span className="material-icons">logout</span> Logout
         </div>
       </aside>
@@ -224,6 +246,24 @@ const Dashboard = () => {
         )}
 
         {activeSection === "Topic-hub" && <TopicHub activeSection={activeSection} />}
+
+        {/* Logout Dialog */}
+        {showLogoutDialog && (
+          <div className="logout-dialog-overlay">
+            <div className="logout-dialog">
+              <h3>Confirm Logout</h3>
+              <p>Are you sure you want to logout?</p>
+              <div className="dialog-buttons">
+                <button className="dialog-btn yes-btn" onClick={confirmLogout}>
+                  Yes
+                </button>
+                <button className="dialog-btn no-btn" onClick={cancelLogout}>
+                  No
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </main>
     </div>
   );

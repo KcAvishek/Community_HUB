@@ -1,7 +1,3 @@
-
-
-
-
 import React, { useState } from 'react';
 
 export const LoginInputField = ({ type, placeholder, icon, id, name, value, onChange }) => {
