@@ -5,7 +5,7 @@ const applicationSchema = new mongoose.Schema({
   username: { type: String, required: true },
   email: { type: String, required: true },
   feedback: { type: String, required: true },
-  status: { type: String,enum: ['pending', 'approved', 'rejected'],default: 'pending'},
+  status: { type: String,enum: ['pending', 'accepted', 'rejected'],default: 'pending'},
   user_id: {type: mongoose.Schema.Types.ObjectId,ref: 'User',required: true}
 }, { timestamps: true });
 

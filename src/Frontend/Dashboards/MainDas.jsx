@@ -314,23 +314,6 @@ const MainDas = () => {
         )}
 {activeSection === "Topic-hub" && <TopicHub activeSection={activeSection} />}
 
-        {/* Logout Dialog */}
-        {showLogoutDialog && (
-          <div className="logout-dialog-overlay">
-            <div className="logout-dialog">
-              <h3>Confirm Logout</h3>
-              <p>Are you sure you want to logout?</p>
-              <div className="dialog-buttons">
-                <button className="dialog-btn yes-btn" onClick={confirmLogout}>
-                  Yes
-                </button>
-                <button className="dialog-btn no-btn" onClick={cancelLogout}>
-                  No
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
 
       </main>
     </div>
