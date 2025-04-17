@@ -8,9 +8,11 @@ const Roles = () => {
   const navigate = useNavigate();
 
   const roleOptions = [
+    { value: 'admin', label: 'Admin' },
     { value: 'leader', label: 'Leader' },
     { value: 'communityMember', label: 'Community Member' },
     { value: 'non-member', label: 'Non-Member' },
+    
   ];
 
   const handleRoleChange = (event) => {

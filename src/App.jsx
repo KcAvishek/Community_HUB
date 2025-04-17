@@ -4,6 +4,7 @@ import SignUp from "./Frontend/signUp";
 import Role from "./Frontend/roles";
 import Dashboard from "./Frontend/Dashboard";
 import MainDas from "./Frontend/Dashboards/MainDas";
+import Admin from "./Frontend/admin/Admin";
 import { Toaster } from "sonner";
 
 const App = () => {
@@ -11,6 +12,7 @@ const App = () => {
     <Router>
       <Toaster position="top-right" richColors />
       <Routes>
+      <Route path="/admin/Admin" element={<Admin />} /> 
         <Route path="/dashboard/main" element={<MainDas />} /> 
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/test-icons" element={<Dashboard />} />

@@ -3,7 +3,7 @@ import { useLocation, Link, useNavigate } from 'react-router-dom';
 import { LoginInputField } from './LoginInputField';
 import axios from 'axios';
 import { toast } from "sonner";
-import useAuthStore from './Store/authStore'; //  Import Zustand store
+import useAuthStore from './Store/authStore';
 
 const Login = () => {
   const location = useLocation();
@@ -15,11 +15,8 @@ const Login = () => {
   const [password, setPassword] = useState('');
 
   const navigate = useNavigate();
-
-  // Zustand function to set auth data
   const setAuthData = useAuthStore((state) => state.setAuthData);
 
-  // Reset communityName when the role changes
   useEffect(() => {
     setCommunityName('');
   }, [selectedRole]);
@@ -27,14 +24,12 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    // Basic validation
     if (!username || !password) {
       toast.error('Username and password are required');
       return;
     }
 
-    // Additional validation for community name if role is not non-member
-    if (selectedRole !== 'non-member' && !communityName.trim()) {
+    if (selectedRole !== 'non-member' && !communityName.trim() && selectedRole !== 'admin') {
       toast.error('Community name is required');
       return;
     }
@@ -45,7 +40,7 @@ const Login = () => {
       role: selectedRole,
     };
 
-    if (selectedRole !== 'non-member') {
+    if (selectedRole !== 'non-member' && selectedRole !== 'admin') {
       loginData.community_name = communityName.trim();
     }
 
@@ -57,7 +52,6 @@ const Login = () => {
       console.log('Login response:', response.data);
 
       if (response.data.token) {
-        // ✅ Store all auth data in Zustand and localStorage
         setAuthData({
           token: response.data.token,
           role: response.data.role,
@@ -65,12 +59,15 @@ const Login = () => {
           community: response.data.community,
           communityName: communityName.trim(),
           email: response.data.email,
-          username:response.data.username,
+          username: response.data.username,
         });
 
         toast.success(response.data.message);
 
-        if (selectedRole.toLowerCase() === 'leader') {
+        // ✅ Role-based redirection
+        if (selectedRole.toLowerCase() === 'admin') {
+          navigate('/admin/Admin');
+        } else if (selectedRole.toLowerCase() === 'leader') {
           navigate('/dashboard/main');
         } else {
           navigate('/dashboard');
@@ -90,7 +87,7 @@ const Login = () => {
         Community <span className="highlight">HUB</span>
       </h2>
       <form onSubmit={handleLogin} className="login-form">
-        {selectedRole !== 'non-member' && (
+        {selectedRole !== 'non-member' && selectedRole !== 'admin' && (
           <LoginInputField
             type="text"
             placeholder="Community_Name"

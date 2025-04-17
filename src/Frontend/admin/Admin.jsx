@@ -1,11 +1,12 @@
+
 import React, { useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import "../Dashboard.css";
-import AnnouncementSection from "./AnnouncementSection";
-import CalendarSection from "./CalendarSection";
-import FormTableSection from "./FormTable";
-import TimeTrackSection from "./Timetrack";
+import AnnouncementSection from "./adminAnnouncementSection";
+import CalendarSection from "./adminCalendarSection";
+import FormTableSection from "./adminFormTable";
+import TimeTrackSection from "./adminTimetrack";
 import { useNavigate } from "react-router-dom";
 import useAuthStore from "../Store/authStore";
 import TopicHub from "../TopicHub";
@@ -13,7 +14,7 @@ import { toast } from "sonner";
 
 
 
-const MainDas = () => {
+const Admin = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [event, setEvent] = useState("");
   const [description, setDescription] = useState("");
@@ -110,6 +111,9 @@ const MainDas = () => {
         <ul>
           <li onClick={() => setActiveSection("dashboard")}>
             <span className="material-icons">dashboard</span> Dashboard
+          </li>
+          <li onClick={() => setActiveSection("community")}>
+            <span className="material-icons">roofing</span> Community
           </li>
           <li onClick={() => setActiveSection("announcement")}>
             <span className="material-icons">lightbulb</span> Announcement
@@ -320,5 +324,5 @@ const MainDas = () => {
   );
 };
 
-export default MainDas;
+export default Admin;
 
