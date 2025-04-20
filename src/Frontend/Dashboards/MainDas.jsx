@@ -129,9 +129,9 @@ const MainDas = () => {
           <li onClick={() => setActiveSection("Topic-hub")}>
             <span className="material-icons">diversity_3</span> Topic Hub
           </li>
-          <li onClick={() => setActiveSection("Notification")}>
+          {/* <li onClick={() => setActiveSection("Notification")}>
             <span className="material-icons">notifications</span> Notification
-          </li>
+          </li> */}
           <li onClick={() => setActiveSection("settings")}>
             <span className="material-icons">settings</span> Settings
           </li>
@@ -150,18 +150,13 @@ const MainDas = () => {
               href="https://fonts.googleapis.com/icon?family=Material+Icons"
             />
             <span className="material-icons">inbox</span>
-            <span
-              className="material-icons notification-icon"
-              onClick={() => setActiveSection("Notification")}
-              style={{ cursor: "pointer" }}
-            >
-              notifications
+            {/* <span className="material-icons notification-icon" onClick={() => setActiveSection("Notification")} style={{ cursor: "pointer" }}> notifications
               {notifications.filter((n) => !n.read).length > 0 && (
                 <span className="notification-badge">
                   {notifications.filter((n) => !n.read).length}
                 </span>
               )}
-            </span>
+            </span> */}
           </div>
         </header>
         <hr />

@@ -71,9 +71,9 @@ const cancelLogout = () => {
           <li onClick={() => setActiveSection("Topic-hub")}>
             <span className="material-icons">diversity_3</span> Topic Hub
           </li>
-          <li onClick={() => setActiveSection("Notification")}>
+          {/* <li onClick={() => setActiveSection("Notification")}>
             <span className="material-icons">notifications</span> Notification
-          </li>
+          </li> */}
           <li onClick={() => setActiveSection("settings")}>
             <span className="material-icons">settings</span> Settings
           </li>
@@ -93,7 +93,7 @@ const cancelLogout = () => {
             />
             
             <span className="material-icons">inbox</span>
-    <span
+    {/* <span
       className="material-icons notification-icon"
       onClick={() => setActiveSection("Notification")}
       style={{ cursor: "pointer" }}
@@ -102,7 +102,7 @@ const cancelLogout = () => {
       {notifications.filter((n) => !n.read).length > 0 && (
         <span className="notification-badge"></span> // Removed the number
       )}
-            </span>
+            </span> */}
           </div>
         </header>
         <hr />

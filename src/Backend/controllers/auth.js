@@ -138,4 +138,7 @@ const getCommunityMembers = async (req, res) => {
   }
 };
 
-module.exports = {register,login,updateUserRoleAndCommunity,getCommunityMembers,};
+
+module.exports = { register, login, updateUserRoleAndCommunity, getCommunityMembers,};
+
+

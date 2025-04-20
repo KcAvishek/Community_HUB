@@ -14,6 +14,8 @@ const createCommunity = async (req, res) => {
       return res.status(400).json({ message: 'Name and leader_id are required' });
     }
 
+
+
     // Create a new community
     const newCommunity = await Community.create({
       name,
@@ -49,6 +51,8 @@ const createCommunity = async (req, res) => {
     try {
       const { id } = req.params;
   
+
+
       // Find the community by ID
       const community = await Community.findById(id).populate('leader_id', 'name');
       if (!community) {
@@ -71,6 +75,7 @@ const createCommunity = async (req, res) => {
       const { id } = req.params;
       const { name, description } = req.body;
   
+
       // Update the community
       const updatedCommunity = await Community.findByIdAndUpdate(
         id,
@@ -89,10 +94,13 @@ const createCommunity = async (req, res) => {
     }
   };
   
+
+
   const deleteCommunity = async (req, res) => {
     try {
       const { id } = req.params;
   
+
       // Delete the community
       const deletedCommunity = await Community.findByIdAndDelete(id);
       if (!deletedCommunity) {
@@ -106,10 +114,4 @@ const createCommunity = async (req, res) => {
     }
   };
   
-  module.exports = {
-    createCommunity,
-    getCommunities,
-    getCommunityById,
-    updateCommunity,
-    deleteCommunity,
-  };
+  module.exports = {createCommunity,getCommunities,getCommunityById,updateCommunity,deleteCommunity,};

@@ -9,6 +9,7 @@ const announcementRouter = require('../Backend/routes/AnnouncementRoutes');
 const applicationRouter = require('../Backend/routes/applicationRoutes');
 const eventRoutes = require('../Backend/routes/eventRoutes');
 const attendanceRoutes = require('../Backend/routes/attendanceRoutes');
+const discussionRoutes = require('../Backend/routes/discussionRoutes');
 const dotenv = require('dotenv');
 // Converts the config.env file to environmental variables
 dotenv.config({ path: './config.env' });
@@ -39,6 +40,9 @@ app.use('/api/a2', announcementRouter);
 app.use('/api/a3', eventRoutes);
 app.use('/api/a4', applicationRouter,);
 app.use('/api/a5', attendanceRoutes,);
+app.use('/api/a6', discussionRoutes,);
+
+
 
 // Basic route
 app.get('/', (req, res) => {

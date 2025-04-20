@@ -1,5 +1,5 @@
 const express = require('express');
-const { register, login, getCommunityMembers } = require('../controllers/auth');
+const { register, login, getCommunityMembers} = require('../controllers/auth');
 const router = express.Router();
 
 // Signup Route
@@ -11,4 +11,6 @@ router.get('/members/:community_name', getCommunityMembers);
 
 
 module.exports = router;
+
+
 

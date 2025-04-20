@@ -7,6 +7,7 @@ import AnnouncementSection from "./adminAnnouncementSection";
 import CalendarSection from "./adminCalendarSection";
 import FormTableSection from "./adminFormTable";
 import TimeTrackSection from "./adminTimetrack";
+import CommunitySection from "./adminCommunitySection";
 import { useNavigate } from "react-router-dom";
 import useAuthStore from "../Store/authStore";
 import TopicHub from "../TopicHub";
@@ -20,7 +21,6 @@ const Admin = () => {
   const [description, setDescription] = useState("");
   const [activeSection, setActiveSection] = useState("dashboard");
   const [showLogoutDialog, setShowLogoutDialog] = useState(false); // State for dialog visibility
-
   const navigate = useNavigate();
   const { clearAuthData } = useAuthStore();
 
@@ -118,24 +118,24 @@ const Admin = () => {
           <li onClick={() => setActiveSection("announcement")}>
             <span className="material-icons">lightbulb</span> Announcement
           </li>
-          <li onClick={() => setActiveSection("form")}>
+          {/* <li onClick={() => setActiveSection("form")}>
             <span className="material-icons">description</span> Form
-          </li>
+          </li> */}
           {/* <li onClick={() => setActiveSection("poll&Voting")}>
             <span className="material-icons">description</span> Poll&Voting
           </li> */}
           <li onClick={() => setActiveSection("calendar")}>
             <span className="material-icons">calendar_today</span> Calendar
           </li>
-          <li onClick={() => setActiveSection("Time Track")}>
+          {/* <li onClick={() => setActiveSection("Time Track")}>
             <span className="material-icons">hourglass_top</span> Time Track
-          </li>
+          </li> */}
           <li onClick={() => setActiveSection("Topic-hub")}>
             <span className="material-icons">diversity_3</span> Topic Hub
           </li>
-          <li onClick={() => setActiveSection("Notification")}>
+          {/* <li onClick={() => setActiveSection("Notification")}>
             <span className="material-icons">notifications</span> Notification
-          </li>
+          </li> */}
           <li onClick={() => setActiveSection("settings")}>
             <span className="material-icons">settings</span> Settings
           </li>
@@ -154,7 +154,7 @@ const Admin = () => {
               href="https://fonts.googleapis.com/icon?family=Material+Icons"
             />
             <span className="material-icons">inbox</span>
-            <span
+            {/* <span
               className="material-icons notification-icon"
               onClick={() => setActiveSection("Notification")}
               style={{ cursor: "pointer" }}
@@ -165,7 +165,7 @@ const Admin = () => {
                   {notifications.filter((n) => !n.read).length}
                 </span>
               )}
-            </span>
+            </span> */}
           </div>
         </header>
         <hr />
@@ -224,6 +224,8 @@ const Admin = () => {
             </div>
           </div>
         )}
+        
+        {activeSection === "community" && <CommunitySection activeSection={activeSection} />}
 
         {activeSection === "announcement" && <AnnouncementSection activeSection={activeSection} />}
         

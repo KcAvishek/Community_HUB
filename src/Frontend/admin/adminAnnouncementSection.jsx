@@ -5,50 +5,47 @@ import { toast } from "sonner";
 
 const adminAnnouncementSection = ({ activeSection }) => {
   const [announcementDescription, setAnnouncementDescription] = useState("");
+  const [announcementCommunity, setAnnouncementCommunity] = useState(""); // new state for editable community
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [announcements, setAnnouncements] = useState([]); // Store announcements
-  const [currentAnnouncement, setCurrentAnnouncement] = useState(null); // Track the announcement being updated
+  const [announcements, setAnnouncements] = useState([]); 
+  const [currentAnnouncement, setCurrentAnnouncement] = useState(null); 
 
   const token = useAuthStore((state) => state.token);
-  const communityName = useAuthStore((state) => state.communityName); // Community name of the logged-in user
+  const communityName = useAuthStore((state) => state.communityName); 
 
   const userId = useMemo(() => token?.user?._id, [token]);
 
-  // Fetch announcements
   const fetchAnnouncements = async () => {
     try {
       const res = await axios.get("http://localhost:4000/api/a2/announcements");
-      setAnnouncements(res.data); // Store all announcements
+      setAnnouncements(res.data);
     } catch (error) {
       toast.error("Failed to fetch announcements");
       console.error("Fetch error:", error);
     }
   };
 
-  // Run once on mount
   useEffect(() => {
     fetchAnnouncements();
   }, []);
-
-  // Filter announcements based on the logged-in user's community name
-  const filteredAnnouncements = announcements.filter(
-    (announcement) => announcement.title === communityName // Filter by community name
-  );
 
   const openModal = (announcement = null) => {
     setIsModalOpen(true);
     if (announcement) {
       setCurrentAnnouncement(announcement);
       setAnnouncementDescription(announcement.content);
+      setAnnouncementCommunity(announcement.title); // Set existing community
     } else {
-      setCurrentAnnouncement(null); // New announcement
-      setAnnouncementDescription(""); // Reset description for new announcement
+      setCurrentAnnouncement(null);
+      setAnnouncementDescription("");
+      setAnnouncementCommunity(communityName); // Default to current user's community
     }
   };
 
   const closeModal = () => {
     setIsModalOpen(false);
     setAnnouncementDescription("");
+    setAnnouncementCommunity("");
   };
 
   const handleAddOrUpdateAnnouncement = async () => {
@@ -56,7 +53,7 @@ const adminAnnouncementSection = ({ activeSection }) => {
     expiresAt.setDate(expiresAt.getDate() + 5);
 
     const payload = {
-      title: communityName, // Assign community name to the announcement
+      title: announcementCommunity, // Use editable input
       content: announcementDescription,
       created_by: userId,
       expires_at: expiresAt.toISOString(),
@@ -65,18 +62,16 @@ const adminAnnouncementSection = ({ activeSection }) => {
     try {
       let response;
       if (currentAnnouncement) {
-        // Update
         response = await axios.put(
           `http://localhost:4000/api/a2/announcements/${currentAnnouncement._id}`,
           payload
         );
         toast.success("Announcement updated successfully!");
       } else {
-        // Create
         response = await axios.post("http://localhost:4000/api/a2/announcements", payload);
         toast.success("Announcement created successfully!");
       }
-      fetchAnnouncements(); // Refresh the list after creating or updating
+      fetchAnnouncements();
       closeModal();
     } catch (error) {
       toast.error("Failed to save announcement");
@@ -88,7 +83,7 @@ const adminAnnouncementSection = ({ activeSection }) => {
     try {
       await axios.delete(`http://localhost:4000/api/a2/announcements/${id}`);
       toast.success("Announcement deleted successfully!");
-      fetchAnnouncements(); // Refresh the list after deletion
+      fetchAnnouncements();
     } catch (error) {
       toast.error("Failed to delete announcement");
       console.error(error.response?.data || error.message);
@@ -99,12 +94,12 @@ const adminAnnouncementSection = ({ activeSection }) => {
     activeSection === "announcement" && (
       <div className="announcements-container">
         <div className="box announcements">
-          <h2>Announcements for {communityName}</h2> {/* Display community name in the header */}
+          <h2>All Announcements</h2>
 
-          {filteredAnnouncements.length === 0 ? (
-            <p>No announcements yet for {communityName}.</p>
+          {announcements.length === 0 ? (
+            <p>No announcements yet.</p>
           ) : (
-            filteredAnnouncements.map((a) => (
+            announcements.map((a) => (
               <div key={a._id} className="announcement-item">
                 <p><strong>{a.title}</strong></p>
                 <p>{a.content}</p>
@@ -112,7 +107,7 @@ const adminAnnouncementSection = ({ activeSection }) => {
                 <div className="announcement-buttons">
                   <button
                     className="update-button"
-                    onClick={() => openModal(a)} // Open modal to update
+                    onClick={() => openModal(a)}
                   >
                     Update
                   </button>
@@ -136,7 +131,11 @@ const adminAnnouncementSection = ({ activeSection }) => {
               <h3>{currentAnnouncement ? "Update Announcement" : "Add Announcement"}</h3>
               <div className="modal-input">
                 <label>Community:</label>
-                <input type="text" value={communityName} readOnly disabled />
+                <input
+                  type="text"
+                  value={announcementCommunity}
+                  onChange={(e) => setAnnouncementCommunity(e.target.value)}
+                />
               </div>
               <div className="modal-input">
                 <label>Description:</label>

@@ -17,7 +17,6 @@ router.put('/events/:id', updateEvent);
 // Route to delete an event
 router.delete('/events/:id', deleteEvent);
 
-
 module.exports = router;
 
 

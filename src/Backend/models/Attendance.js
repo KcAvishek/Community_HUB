@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const attendanceSchema = new mongoose.Schema({
-  community_name: { type: String, required: true }, // 👈 new field added
+  community_name: { type: String, required: true },
   date: { type: Date, required: true },
   attendees: [{
     name: { type: String, required: true },
