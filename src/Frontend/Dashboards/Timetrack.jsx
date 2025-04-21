@@ -490,7 +490,7 @@ const TimeTrack = () => {
         <thead>
         <tr>
           <th>SN</th>
-          <th>Name</th>
+          <th>UserName</th>
           <th>Status</th>
           <th className="no-print">Attendance</th>
         </tr>

@@ -139,6 +139,17 @@ const getCommunityMembers = async (req, res) => {
 };
 
 
-module.exports = { register, login, updateUserRoleAndCommunity, getCommunityMembers,};
+// Get all users
+const getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find().select('username email role community_name _id');
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to fetch users', error: error.message });
+  }
+};
+
+
+module.exports = { register, login, updateUserRoleAndCommunity, getCommunityMembers,getAllUsers,};
 
 

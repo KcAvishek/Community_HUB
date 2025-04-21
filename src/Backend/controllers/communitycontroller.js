@@ -73,13 +73,13 @@ const createCommunity = async (req, res) => {
   const updateCommunity = async (req, res) => {
     try {
       const { id } = req.params;
-      const { name, description } = req.body;
+      const { name, description, leader_id} = req.body;
   
 
       // Update the community
       const updatedCommunity = await Community.findByIdAndUpdate(
         id,
-        { name, description, updated_at: Date.now() },
+        { name, description, leader_id, updated_at: Date.now() },
         { new: true }
       );
   

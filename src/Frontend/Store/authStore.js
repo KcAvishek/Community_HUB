@@ -1,9 +1,98 @@
+// import { create } from 'zustand';
+// 
+// const safeParse = (key) => {
+//   try {
+//     const item = localStorage.getItem(key);
+//     return item && item !== "undefined" ? JSON.parse(item) : null;
+//   } catch (err) {
+//     console.error(`Error parsing ${key}:`, err);
+//     return null;
+//   }
+// };
+// 
+// const useAuthStore = create((set) => {
+//   const token = localStorage.getItem('authToken');
+//   const role = token ? localStorage.getItem('userRole') : null;
+//   const user = token ? safeParse('userData') : null;
+//   const community = token ? safeParse('communityData') : null;
+//   const communityName = token ? localStorage.getItem('communityName') : null;
+//   const email = token ? localStorage.getItem('userEmail') : null; // ✅ New
+//   const username = token ? localStorage.getItem('userName') : null; // ✅ New
+// 
+// 
+//   console.log("Initial token:", token);
+//   console.log("Initial role:", role);
+//   console.log("Initial user data:", user);
+//   console.log("Initial community data:", community);
+//   console.log("Initial community name:", communityName);
+//   console.log("Initial email:", email); // ✅ New
+//   console.log("Initial username:", username); // ✅ New
+// 
+//   return {
+//     token,
+//     role,
+//     user,
+//     community,
+//     communityName,
+//     email,
+//     username,// ✅ Add email to state
+// 
+//     setAuthData: ({ token, role, user, community, communityName, email,username}) => {
+//       localStorage.setItem('authToken', token);
+//       localStorage.setItem('userRole', role);
+//       localStorage.setItem('userData', JSON.stringify(user));
+//       localStorage.setItem('communityData', JSON.stringify(community));
+//       localStorage.setItem('communityName', communityName);
+//       localStorage.setItem('userEmail', email);
+//       localStorage.setItem('userName', username);
+// 
+//       console.log("Auth data set in Zustand and localStorage:");
+//       console.log("New token:", token);
+//       console.log("New role:", role);
+//       console.log("New user data:", user);
+//       console.log("New community data:", community);
+//       console.log("New community name:", communityName);
+//       console.log("New email:", email); 
+//       console.log('userName:', username);
+// 
+//       set({ token, role, user, community, communityName, email,username });
+//     },
+// 
+//     clearAuthData: () => {
+//       localStorage.removeItem('authToken');
+//       localStorage.removeItem('userRole');
+//       localStorage.removeItem('userData');
+//       localStorage.removeItem('communityData');
+//       localStorage.removeItem('communityName');
+//       localStorage.removeItem('userEmail'); 
+//       localStorage.removeItem('userName');
+// 
+//       console.log("Auth data cleared from Zustand and localStorage");
+// 
+//       set({
+//         token: null,
+//         role: null,
+//         user: null,
+//         community: null,
+//         communityName: null,
+//         email: null, 
+//         username:null,// ✅ Clear from state
+//       });
+//     },
+//   };
+// });
+// 
+// export default useAuthStore;
+
 import { create } from 'zustand';
 
 const safeParse = (key) => {
   try {
     const item = localStorage.getItem(key);
-    return item && item !== "undefined" ? JSON.parse(item) : null;
+    if (!item || item === "undefined") return null;
+    const parsed = JSON.parse(item);
+    // If parsed result is a string (e.g., user ID), wrap it in an object
+    return typeof parsed === 'string' ? { _id: parsed } : parsed;
   } catch (err) {
     console.error(`Error parsing ${key}:`, err);
     return null;
@@ -13,20 +102,20 @@ const safeParse = (key) => {
 const useAuthStore = create((set) => {
   const token = localStorage.getItem('authToken');
   const role = token ? localStorage.getItem('userRole') : null;
-  const user = token ? safeParse('userData') : null;
+  const userData = token ? safeParse('userData') : null;
+  const user = userData ? (typeof userData === 'string' ? { _id: userData } : userData) : null;
   const community = token ? safeParse('communityData') : null;
   const communityName = token ? localStorage.getItem('communityName') : null;
-  const email = token ? localStorage.getItem('userEmail') : null; // ✅ New
-  const username = token ? localStorage.getItem('userName') : null; // ✅ New
-
+  const email = token ? localStorage.getItem('userEmail') : null;
+  const username = token ? localStorage.getItem('userName') : null;
 
   console.log("Initial token:", token);
   console.log("Initial role:", role);
   console.log("Initial user data:", user);
   console.log("Initial community data:", community);
   console.log("Initial community name:", communityName);
-  console.log("Initial email:", email); // ✅ New
-  console.log("Initial username:", username); // ✅ New
+  console.log("Initial email:", email);
+  console.log("Initial username:", username);
 
   return {
     token,
@@ -35,12 +124,14 @@ const useAuthStore = create((set) => {
     community,
     communityName,
     email,
-    username,// ✅ Add email to state
+    username,
 
-    setAuthData: ({ token, role, user, community, communityName, email,username}) => {
+    setAuthData: ({ token, role, user, community, communityName, email, username }) => {
       localStorage.setItem('authToken', token);
       localStorage.setItem('userRole', role);
-      localStorage.setItem('userData', JSON.stringify(user));
+      // Ensure user is stored as an object with _id
+      const userData = typeof user === 'string' ? { _id: user } : user;
+      localStorage.setItem('userData', JSON.stringify(userData));
       localStorage.setItem('communityData', JSON.stringify(community));
       localStorage.setItem('communityName', communityName);
       localStorage.setItem('userEmail', email);
@@ -49,13 +140,13 @@ const useAuthStore = create((set) => {
       console.log("Auth data set in Zustand and localStorage:");
       console.log("New token:", token);
       console.log("New role:", role);
-      console.log("New user data:", user);
+      console.log("New user data:", userData);
       console.log("New community data:", community);
       console.log("New community name:", communityName);
-      console.log("New email:", email); 
-      console.log('userName:', username);
+      console.log("New email:", email);
+      console.log("New username:", username);
 
-      set({ token, role, user, community, communityName, email,username });
+      set({ token, role, user: userData, community, communityName, email, username });
     },
 
     clearAuthData: () => {
@@ -64,7 +155,7 @@ const useAuthStore = create((set) => {
       localStorage.removeItem('userData');
       localStorage.removeItem('communityData');
       localStorage.removeItem('communityName');
-      localStorage.removeItem('userEmail'); 
+      localStorage.removeItem('userEmail');
       localStorage.removeItem('userName');
 
       console.log("Auth data cleared from Zustand and localStorage");
@@ -75,8 +166,8 @@ const useAuthStore = create((set) => {
         user: null,
         community: null,
         communityName: null,
-        email: null, 
-        username:null,// ✅ Clear from state
+        email: null,
+        username: null,
       });
     },
   };

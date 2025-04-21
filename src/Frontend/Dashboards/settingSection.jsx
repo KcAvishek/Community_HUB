@@ -4,7 +4,7 @@ const settingSection = () => {
 
       // State for settings
       const [userSettings, setUserSettings] = useState({
-        fullName: "Abhishek K.C.",
+        UserName: "Abhishek K.C.",
         email: "abhi@gmail.com",
         password: "********",
       });
@@ -28,10 +28,10 @@ const settingSection = () => {
       <h3>Profile Settings</h3>
       <div className="settings-form">
         <div className="form-group">
-          <label>Full Name:</label>
+          <label>User Name:</label>
           <input
             type="text"
-            name="fullName"
+            name="UserName"
             value={userSettings.fullName}
             onChange={handleSettingsChange}
             placeholder="Enter your full name"
