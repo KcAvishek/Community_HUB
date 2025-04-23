@@ -55,9 +55,4 @@ const getReplies = async (req, res) => {
   }
 };
 
-module.exports = {
-  postQuestion,
-  getQuestions,
-  postReply,
-  getReplies
-};
+module.exports = {postQuestion,getQuestions,postReply,getReplies};

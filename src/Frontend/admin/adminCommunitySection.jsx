@@ -12,9 +12,11 @@
 //   const [showUpdateModal, setShowUpdateModal] = useState(false);
 //   const [selectedCommunityForUpdate, setSelectedCommunityForUpdate] = useState(null);
 //   const [formData, setFormData] = useState({ name: '', description: '', leader_id: '' });
+//   const [allUsers, setAllUsers] = useState([]);
 // 
 //   useEffect(() => {
 //     fetchCommunities();
+//     fetchAllUsers();
 //   }, []);
 // 
 //   useEffect(() => {
@@ -29,7 +31,6 @@
 //     setLoading(true);
 //     try {
 //       const response = await axios.get('http://localhost:4000/api/a1/getcommunity');
-//       console.log("Fetched communities:", response.data);
 //       if (response.data && Array.isArray(response.data.communities)) {
 //         setCommunities(response.data.communities);
 //         setError(null);
@@ -51,7 +52,6 @@
 //     setLoading(true);
 //     try {
 //       const response = await axios.get(`/api/auth/members/${encodeURIComponent(communityName)}`);
-//       console.log("Fetched members:", response.data);
 //       setMembers(response.data);
 //     } catch (err) {
 //       toast.error('Failed to fetch community members');
@@ -61,9 +61,18 @@
 //     }
 //   };
 // 
+//   const fetchAllUsers = async () => {
+//     try {
+//       const response = await axios.get('http://localhost:4000/api/auth/all-users');
+//       setAllUsers(response.data);
+//     } catch (err) {
+//       toast.error('Failed to fetch users');
+//       console.error(err);
+//     }
+//   };
+// 
 //   const handleAddCommunity = async () => {
 //     try {
-//       console.log("Sending data to create:", formData);
 //       const response = await axios.post('http://localhost:4000/api/a1/createcommunity', formData);
 //       setCommunities([...communities, response.data.community]);
 //       setShowAddModal(false);
@@ -77,7 +86,6 @@
 // 
 //   const handleUpdateCommunity = async () => {
 //     try {
-//       console.log("Updating community with ID:", selectedCommunityForUpdate._id);
 //       const response = await axios.put(`http://localhost:4000/api/a1/updatecommunity/${selectedCommunityForUpdate._id}`, formData);
 //       setCommunities(
 //         communities.map((c) =>
@@ -94,7 +102,6 @@
 //     }
 //   };
 // 
-// 
 //   const handleDeleteCommunity = async (id) => {
 //     try {
 //       await axios.delete(`http://localhost:4000/api/a1/deletecommunityid/${id}`);
@@ -109,7 +116,6 @@
 //       console.error(err);
 //     }
 //   };
-//   
 // 
 //   const openUpdateModal = (community) => {
 //     setSelectedCommunityForUpdate(community);
@@ -171,6 +177,41 @@
 //         </div>
 //       </div>
 // 
+//       {/* USER TABLE */}
+//       <div className="table-section mt-10">
+//         <h2 className="table-title">Users</h2>
+//         <div className="table-container">
+//           <table className="community-table">
+//             <thead>
+//               <tr>
+//                 <th className="table-head">Username</th>
+//                 <th className="table-head">Email</th>
+//                 <th className="table-head">Role</th>
+//                 <th className="table-head">Community</th>
+//                 <th className="table-head">User ID</th>
+//               </tr>
+//             </thead>
+//             <tbody>
+//               {allUsers.length === 0 ? (
+//                 <tr>
+//                   <td colSpan="5" className="table-empty">No users found</td>
+//                 </tr>
+//               ) : (
+//                 allUsers.map((user) => (
+//                   <tr key={user._id} className="table-row">
+//                     <td className="table-cell">{user.username}</td>
+//                     <td className="table-cell">{user.email}</td>
+//                     <td className="table-cell">{user.role}</td>
+//                     <td className="table-cell">{user.community_name || 'N/A'}</td>
+//                     <td className="table-cell">{user._id}</td>
+//                   </tr>
+//                 ))
+//               )}
+//             </tbody>
+//           </table>
+//         </div>
+//       </div>
+// 
 //       {showAddModal && (
 //         <div className="modal-overlay">
 //           <div className="modal-content">
@@ -208,6 +249,8 @@
 
 
 
+
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'sonner';
@@ -223,6 +266,9 @@ const AdminCommunitySection = () => {
   const [selectedCommunityForUpdate, setSelectedCommunityForUpdate] = useState(null);
   const [formData, setFormData] = useState({ name: '', description: '', leader_id: '' });
   const [allUsers, setAllUsers] = useState([]);
+  const [showUpdateUserModal, setShowUpdateUserModal] = useState(false);
+  const [selectedUserForUpdate, setSelectedUserForUpdate] = useState(null);
+  const [userFormData, setUserFormData] = useState({ username: '', email: '', role: '', community_name: '', password: '' });
 
   useEffect(() => {
     fetchCommunities();
@@ -337,6 +383,53 @@ const AdminCommunitySection = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  // Functions for user update
+  const openUpdateUserModal = (user) => {
+    setSelectedUserForUpdate(user);
+    setUserFormData({
+      username: user.username,
+      email: user.email,
+      role: user.role,
+      community_name: user.community_name || '',
+      password: '' // Password is initially empty; admin can set a new one
+    });
+    setShowUpdateUserModal(true);
+  };
+
+  const handleUserInputChange = (e) => {
+    setUserFormData({ ...userFormData, [e.target.name]: e.target.value });
+  };
+
+  const handleUpdateUser = async () => {
+    try {
+      const response = await axios.post('http://localhost:4000/api/auth/update-user', {
+        userId: selectedUserForUpdate._id,
+        username: userFormData.username,
+        email: userFormData.email,
+        role: userFormData.role,
+        community_name: userFormData.community_name,
+        password: userFormData.password || undefined // Only send password if provided
+      });
+
+      if (response.data.success) {
+        setAllUsers(
+          allUsers.map((u) =>
+            u._id === selectedUserForUpdate._id ? { ...u, ...response.data.user } : u
+          )
+        );
+        setShowUpdateUserModal(false);
+        setUserFormData({ username: '', email: '', role: '', community_name: '', password: '' });
+        setSelectedUserForUpdate(null);
+        toast.success('User updated successfully!');
+      } else {
+        toast.error('Failed to update user');
+      }
+    } catch (err) {
+      toast.error('Failed to update user');
+      console.error(err);
+    }
+  };
+
   return (
     <div className="community-dashboard">
       <h1 className="dashboard-title">Community Dashboard</h1>
@@ -399,12 +492,13 @@ const AdminCommunitySection = () => {
                 <th className="table-head">Role</th>
                 <th className="table-head">Community</th>
                 <th className="table-head">User ID</th>
+                <th className="table-head text-right">Actions</th>
               </tr>
             </thead>
             <tbody>
               {allUsers.length === 0 ? (
                 <tr>
-                  <td colSpan="5" className="table-empty">No users found</td>
+                  <td colSpan="6" className="table-empty">No users found</td>
                 </tr>
               ) : (
                 allUsers.map((user) => (
@@ -414,6 +508,9 @@ const AdminCommunitySection = () => {
                     <td className="table-cell">{user.role}</td>
                     <td className="table-cell">{user.community_name || 'N/A'}</td>
                     <td className="table-cell">{user._id}</td>
+                    <td className="table-cell text-right">
+                      <button onClick={() => openUpdateUserModal(user)} className="update-button">Update</button>
+                    </td>
                   </tr>
                 ))
               )}
@@ -451,10 +548,74 @@ const AdminCommunitySection = () => {
           </div>
         </div>
       )}
+
+      {showUpdateUserModal && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h3 className="modal-title">Update User</h3>
+            <input
+              type="text"
+              name="username"
+              value={userFormData.username}
+              onChange={handleUserInputChange}
+              className="form-input"
+              placeholder="Username"
+            />
+            <input
+              type="email"
+              name="email"
+              value={userFormData.email}
+              onChange={handleUserInputChange}
+              className="form-input"
+              placeholder="Email"
+            />
+            <select
+              name="role"
+              value={userFormData.role}
+              onChange={handleUserInputChange}
+              className="form-input"
+            >
+              <option value="non-member">non-member</option>
+              <option value="communityMember">communityMember</option>
+              <option value="leader">leader</option>
+              <option value="admin">admin</option>
+            </select>
+            <select
+              name="community_name"
+              value={userFormData.community_name}
+              onChange={handleUserInputChange}
+              className="form-input"
+            >
+              <option value="">None</option>
+              {communities.map((community) => (
+                <option key={community._id} value={community.name}>
+                  {community.name}
+                </option>
+              ))}
+            </select>
+            <input
+              type="password"
+              name="password"
+              value={userFormData.password}
+              onChange={handleUserInputChange}
+              className="form-input"
+              placeholder="New Password (leave blank to keep unchanged)"
+            />
+            <div className="modal-actions">
+              <button onClick={() => setShowUpdateUserModal(false)} className="cancel-button">Cancel</button>
+              <button
+                onClick={handleUpdateUser}
+                className="submit-button"
+                disabled={!userFormData.username || !userFormData.email}
+              >
+                Update
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
 
 export default AdminCommunitySection;
-
-

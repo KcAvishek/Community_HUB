@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
@@ -8,24 +7,19 @@ import CalendarSection from "./adminCalendarSection";
 import FormTableSection from "./adminFormTable";
 import TimeTrackSection from "./adminTimetrack";
 import CommunitySection from "./adminCommunitySection";
+import DashboardSection from "./dashboardSection";
 import { useNavigate } from "react-router-dom";
 import useAuthStore from "../Store/authStore";
 import TopicHub from "../TopicHub";
 import { toast } from "sonner";
 
-
-
 const Admin = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [event, setEvent] = useState("");
-  const [description, setDescription] = useState("");
   const [activeSection, setActiveSection] = useState("dashboard");
-  const [showLogoutDialog, setShowLogoutDialog] = useState(false); // State for dialog visibility
+  const [showLogoutDialog, setShowLogoutDialog] = useState(false);
   const navigate = useNavigate();
   const { clearAuthData } = useAuthStore();
 
-  
-  // State for notifications
   const [notifications, setNotifications] = useState([
     {
       id: 1,
@@ -50,7 +44,6 @@ const Admin = () => {
     },
   ]);
 
-  // Notification handlers
   const markAsRead = (id) => {
     setNotifications(
       notifications.map((notif) =>
@@ -67,14 +60,12 @@ const Admin = () => {
     setNotifications([]);
   };
 
-  // State for settings
   const [userSettings, setUserSettings] = useState({
     fullName: "Abhishek K.C.",
     email: "abhi@gmail.com",
     password: "********",
   });
 
-  // Settings handlers
   const handleSettingsChange = (e) => {
     const { name, value, type, checked } = e.target;
     setUserSettings((prev) => ({
@@ -88,68 +79,67 @@ const Admin = () => {
     alert("Settings Saved");
   };
 
-  // Logout handlers
   const handleLogoutClick = () => {
-    setShowLogoutDialog(true); // Show the dialog
+    setShowLogoutDialog(true);
   };
 
   const confirmLogout = () => {
-    clearAuthData(); // Clear auth data
-    toast.success("Logged out successfully!"); // Show toast
-    navigate("/"); // Redirect to role page
-    setShowLogoutDialog(false); // Close dialog
+    clearAuthData();
+    toast.success("Logged out successfully!");
+    navigate("/");
+    setShowLogoutDialog(false);
   };
 
   const cancelLogout = () => {
-    setShowLogoutDialog(false); // Close dialog, stay on page
+    setShowLogoutDialog(false);
   };
 
   return (
     <div className="dashboard">
       <aside className="sidebar">
-        <h2>Community HUB</h2>
-        <ul>
-          <li onClick={() => setActiveSection("dashboard")}>
-            <span className="material-icons">dashboard</span> Dashboard
-          </li>
-          <li onClick={() => setActiveSection("community")}>
-            <span className="material-icons">roofing</span> Community
-          </li>
-          <li onClick={() => setActiveSection("announcement")}>
-            <span className="material-icons">lightbulb</span> Announcement
-          </li>
-          {/* <li onClick={() => setActiveSection("form")}>
-            <span className="material-icons">description</span> Form
-          </li> */}
-          {/* <li onClick={() => setActiveSection("poll&Voting")}>
-            <span className="material-icons">description</span> Poll&Voting
-          </li> */}
-          <li onClick={() => setActiveSection("calendar")}>
-            <span className="material-icons">calendar_today</span> Calendar
-          </li>
-          {/* <li onClick={() => setActiveSection("Time Track")}>
-            <span className="material-icons">hourglass_top</span> Time Track
-          </li> */}
-          <li onClick={() => setActiveSection("Topic-hub")}>
-            <span className="material-icons">diversity_3</span> Topic Hub
-          </li>
-          {/* <li onClick={() => setActiveSection("Notification")}>
-            <span className="material-icons">notifications</span> Notification
-          </li> */}
-          <li onClick={() => setActiveSection("settings")}>
-            <span className="material-icons">settings</span> Settings
-          </li>
-        </ul>
-        <div className="logout" onClick={handleLogoutClick} style={{ cursor: "pointer" }}>
-          <span className="material-icons">logout</span> Logout
-        </div>
-      </aside>
+         <h2>Community HUB</h2>
+         <ul>
+           <li onClick={() => setActiveSection("dashboard")}>
+             <span className="material-icons">dashboard</span> Dashboard
+           </li>
+           <li onClick={() => setActiveSection("community")}>
+             <span className="material-icons">roofing</span> Community
+           </li>
+           <li onClick={() => setActiveSection("announcement")}>
+             <span className="material-icons">lightbulb</span> Announcement
+           </li>
+           {/* <li onClick={() => setActiveSection("form")}>
+             <span className="material-icons">description</span> Form
+           </li> */}
+           {/* <li onClick={() => setActiveSection("poll&Voting")}>
+             <span className="material-icons">description</span> Poll&Voting
+           </li> */}
+           <li onClick={() => setActiveSection("calendar")}>
+             <span className="material-icons">calendar_today</span> Calendar
+           </li>
+           {/* <li onClick={() => setActiveSection("Time Track")}>
+             <span className="material-icons">hourglass_top</span> Time Track
+           </li> */}
+           <li onClick={() => setActiveSection("Topic-hub")}>
+             <span className="material-icons">diversity_3</span> Topic Hub
+           </li>
+           {/* <li onClick={() => setActiveSection("Notification")}>
+             <span className="material-icons">notifications</span> Notification
+           </li> */}
+           <li onClick={() => setActiveSection("settings")}>
+             <span className="material-icons">settings</span> Settings
+           </li>
+         </ul>
+         <div className="logout" onClick={handleLogoutClick} style={{ cursor: "pointer" }}>
+           <span className="material-icons">logout</span> Logout
+         </div>
+       </aside>
 
       <main className="main-content">
-        <header className="header">
-          <h1>Welcome, Abhishek</h1>
-          <div className="header-icons">
-            <link
+      <header className="header">
+           <h1>Welcome, Admin</h1>
+           <div className="header-icons">
+             <link
               rel="stylesheet"
               href="https://fonts.googleapis.com/icon?family=Material+Icons"
             />
@@ -170,71 +160,27 @@ const Admin = () => {
         </header>
         <hr />
 
-        {/* Logout Dialog */}
         {showLogoutDialog && (
           <div className="logout-dialog-overlay">
             <div className="logout-dialog">
               <h3>Confirm Logout</h3>
               <p>Are you sure you want to logout?</p>
               <div className="dialog-buttons">
-                <button className="dialog-btn yes-btn" onClick={confirmLogout}>
-                  Yes
-                </button>
-                <button className="dialog-btn no-btn" onClick={cancelLogout}>
-                  No
-                </button>
+                <button className="dialog-btn yes-btn" onClick={confirmLogout}>Yes</button>
+                <button className="dialog-btn no-btn" onClick={cancelLogout}>No</button>
               </div>
             </div>
           </div>
         )}
 
-        {activeSection === "dashboard" && (
-          <div className="content-grid">
-            <div className="box announcements">
-              <h2>Announcement</h2>
-              <div className="announcement-item">
-                <p><strong>UI Visuals</strong></p>
-                <p>There is a sprinkler that appears to be broken shooting out water in front of my home.</p>
-              </div>
-              <div className="announcement-item">
-                <p><strong>Gaming</strong></p>
-                <p>From its medieval origins to the digital era, learn everything there is to know about the ubiquitous lorem ipsum passage.</p>
-              </div>
-              <div className="announcement-item">
-                <p><strong>AI Learner</strong></p>
-                <p>From its medieval origins to the digital era, learn everything there is to know about the ubiquitous lorem ipsum passage.</p>
-              </div>
-            </div>
-
-            <div className="box poll">
-              <h2>Poll and Voting</h2>
-              <form>
-                <label><input type="radio" name="poll" value="Morning" /> Morning</label>
-                <label><input type="radio" name="poll" value="Afternoon" defaultChecked /> Afternoon</label>
-                <label><input type="radio" name="poll" value="Evening" /> Evening</label>
-                <label><input type="radio" name="poll" value="Night" /> Night</label>
-                <button type="submit">Submit your vote</button>
-              </form>
-            </div>
-
-            <div className="box events">
-              <h2>Events</h2>
-              <Calendar onChange={setSelectedDate} value={selectedDate} />
-              <p>Selected Date: {selectedDate.toLocaleDateString()}</p>
-            </div>
-          </div>
-        )}
-        
+        {activeSection === "dashboard" && <DashboardSection activeSection={activeSection} />}
         {activeSection === "community" && <CommunitySection activeSection={activeSection} />}
-
         {activeSection === "announcement" && <AnnouncementSection activeSection={activeSection} />}
-        
-        {activeSection === "form" && < FormTableSection activeSection={activeSection} />}
-
+        {activeSection === "form" && <FormTableSection activeSection={activeSection} />}
         {activeSection === "calendar" && <CalendarSection activeSection={activeSection} />}
+        {activeSection === "Time Track" && <TimeTrackSection activeSection={activeSection} />}
+        {activeSection === "Topic-hub" && <TopicHub activeSection={activeSection} />}
 
-        {activeSection === "Time Track" && <TimeTrackSection activeSection={activeSection}/>}
-          
         {activeSection === "Notification" && (
           <div className="box notification-section">
             <h2>Notifications</h2>
@@ -318,13 +264,9 @@ const Admin = () => {
             </div>
           </div>
         )}
-{activeSection === "Topic-hub" && <TopicHub activeSection={activeSection} />}
-
-
       </main>
     </div>
   );
 };
 
 export default Admin;
-

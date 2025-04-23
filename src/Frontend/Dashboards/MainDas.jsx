@@ -6,6 +6,7 @@ import AnnouncementSection from "./AnnouncementSection";
 import CalendarSection from "./CalendarSection";
 import FormTableSection from "./FormTable";
 import TimeTrackSection from "./Timetrack";
+import DashboardSection from "../admin/dashboardSection";
 import { useNavigate } from "react-router-dom";
 import useAuthStore from "../Store/authStore";
 import TopicHub from "../TopicHub";
@@ -15,11 +16,8 @@ import { toast } from "sonner";
 
 const MainDas = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [event, setEvent] = useState("");
-  const [description, setDescription] = useState("");
   const [activeSection, setActiveSection] = useState("dashboard");
-  const [showLogoutDialog, setShowLogoutDialog] = useState(false); // State for dialog visibility
-
+  const [showLogoutDialog, setShowLogoutDialog] = useState(false); 
   const navigate = useNavigate();
   const { clearAuthData } = useAuthStore();
 
@@ -179,42 +177,7 @@ const MainDas = () => {
           </div>
         )}
 
-        {activeSection === "dashboard" && (
-          <div className="content-grid">
-            <div className="box announcements">
-              <h2>Announcement</h2>
-              <div className="announcement-item">
-                <p><strong>UI Visuals</strong></p>
-                <p>There is a sprinkler that appears to be broken shooting out water in front of my home.</p>
-              </div>
-              <div className="announcement-item">
-                <p><strong>Gaming</strong></p>
-                <p>From its medieval origins to the digital era, learn everything there is to know about the ubiquitous lorem ipsum passage.</p>
-              </div>
-              <div className="announcement-item">
-                <p><strong>AI Learner</strong></p>
-                <p>From its medieval origins to the digital era, learn everything there is to know about the ubiquitous lorem ipsum passage.</p>
-              </div>
-            </div>
-
-            <div className="box poll">
-              <h2>Poll and Voting</h2>
-              <form>
-                <label><input type="radio" name="poll" value="Morning" /> Morning</label>
-                <label><input type="radio" name="poll" value="Afternoon" defaultChecked /> Afternoon</label>
-                <label><input type="radio" name="poll" value="Evening" /> Evening</label>
-                <label><input type="radio" name="poll" value="Night" /> Night</label>
-                <button type="submit">Submit your vote</button>
-              </form>
-            </div>
-
-            <div className="box events">
-              <h2>Events</h2>
-              <Calendar onChange={setSelectedDate} value={selectedDate} />
-              <p>Selected Date: {selectedDate.toLocaleDateString()}</p>
-            </div>
-          </div>
-        )}
+        {activeSection === "dashboard" && <DashboardSection activeSection={activeSection} />}
 
         {activeSection === "announcement" && <AnnouncementSection activeSection={activeSection} />}
         
