@@ -5,7 +5,7 @@ import { toast } from "sonner";
 
 const adminAnnouncementSection = ({ activeSection }) => {
   const [announcementDescription, setAnnouncementDescription] = useState("");
-  const [announcementCommunity, setAnnouncementCommunity] = useState(""); // new state for editable community
+  const [announcementCommunity, setAnnouncementCommunity] = useState(""); 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [announcements, setAnnouncements] = useState([]); 
   const [currentAnnouncement, setCurrentAnnouncement] = useState(null); 

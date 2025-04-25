@@ -8,6 +8,7 @@ import FormTableSection from "./adminFormTable";
 import TimeTrackSection from "./adminTimetrack";
 import CommunitySection from "./adminCommunitySection";
 import DashboardSection from "./dashboardSection";
+import SettingSection from "../Dashboards/settingSection";
 import { useNavigate } from "react-router-dom";
 import useAuthStore from "../Store/authStore";
 import TopicHub from "../TopicHub";
@@ -60,11 +61,7 @@ const Admin = () => {
     setNotifications([]);
   };
 
-  const [userSettings, setUserSettings] = useState({
-    fullName: "Abhishek K.C.",
-    email: "abhi@gmail.com",
-    password: "********",
-  });
+ 
 
   const handleSettingsChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -220,50 +217,7 @@ const Admin = () => {
             )}
           </div>
         )}
-
-        {activeSection === "settings" && (
-          <div className="box settings-section">
-            <h2>Settings</h2>
-            <div className="settings-container">
-              <h3>Profile Settings</h3>
-              <div className="settings-form">
-                <div className="form-group">
-                  <label>Full Name:</label>
-                  <input
-                    type="text"
-                    name="fullName"
-                    value={userSettings.fullName}
-                    onChange={handleSettingsChange}
-                    placeholder="Enter your full name"
-                  />
-                </div>
-                <div className="form-group">
-                  <label>Email:</label>
-                  <input
-                    type="email"
-                    name="email"
-                    value={userSettings.email}
-                    onChange={handleSettingsChange}
-                    placeholder="Enter your email"
-                  />
-                </div>
-                <div className="form-group">
-                  <label>Password:</label>
-                  <input
-                    type="password"
-                    name="password"
-                    value={userSettings.password}
-                    onChange={handleSettingsChange}
-                    placeholder="Enter new password"
-                  />
-                </div>
-              </div>
-              <div className="settings-actions">
-                <button className="action-btn save-btn" onClick={handleSaveSettings}>Save Settings</button>
-              </div>
-            </div>
-          </div>
-        )}
+        {activeSection === "settings" && <SettingSection activeSection={activeSection} />}
       </main>
     </div>
   );

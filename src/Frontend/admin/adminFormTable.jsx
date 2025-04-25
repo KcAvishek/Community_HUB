@@ -117,3 +117,6 @@ const adminFormTable = () => {
 };
 
 export default adminFormTable;
+
+
+

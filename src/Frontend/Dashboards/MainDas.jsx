@@ -7,6 +7,7 @@ import CalendarSection from "./CalendarSection";
 import FormTableSection from "./FormTable";
 import TimeTrackSection from "./Timetrack";
 import DashboardSection from "../admin/dashboardSection";
+import SettingsSection from "./settingSection";
 import { useNavigate } from "react-router-dom";
 import useAuthStore from "../Store/authStore";
 import TopicHub from "../TopicHub";
@@ -98,7 +99,7 @@ const MainDas = () => {
   };
 
   const cancelLogout = () => {
-    setShowLogoutDialog(false); // Close dialog, stay on page
+    setShowLogoutDialog(false); 
   };
 
   return (
@@ -227,49 +228,7 @@ const MainDas = () => {
           </div>
         )}
 
-        {activeSection === "settings" && (
-          <div className="box settings-section">
-            <h2>Settings</h2>
-            <div className="settings-container">
-              <h3>Profile Settings</h3>
-              <div className="settings-form">
-                <div className="form-group">
-                  <label>User Name:</label>
-                  <input
-                    type="text"
-                    name="UserName"
-                    value={userSettings.fullName}
-                    onChange={handleSettingsChange}
-                    placeholder="Enter your full name"
-                  />
-                </div>
-                <div className="form-group">
-                  <label>Email:</label>
-                  <input
-                    type="email"
-                    name="email"
-                    value={userSettings.email}
-                    onChange={handleSettingsChange}
-                    placeholder="Enter your email"
-                  />
-                </div>
-                <div className="form-group">
-                  <label>Password:</label>
-                  <input
-                    type="password"
-                    name="password"
-                    value={userSettings.password}
-                    onChange={handleSettingsChange}
-                    placeholder="Enter new password"
-                  />
-                </div>
-              </div>
-              <div className="settings-actions">
-                <button className="action-btn save-btn" onClick={handleSaveSettings}>Save Settings</button>
-              </div>
-            </div>
-          </div>
-        )}
+        {activeSection === "settings" && <SettingsSection activeSection={activeSection} />}
 {activeSection === "Topic-hub" && <TopicHub activeSection={activeSection} />}
 
 
