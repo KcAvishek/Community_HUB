@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import useAuthStore from "./Store/authStore";
 import axios from "axios";
@@ -10,6 +10,8 @@ const JoinCommunityForm = () => {
   const [feedback, setFeedback] = useState("");
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
+  const [communities, setCommunities] = useState([]); // State for fetched communities
+  const [loadingCommunities, setLoadingCommunities] = useState(true); // State for loading communities
 
   // Get data from Zustand store
   const { username, email, user } = useAuthStore();
@@ -26,6 +28,39 @@ const JoinCommunityForm = () => {
     userId,
     userType: typeof user, // Confirm user is a string
   });
+
+  // Fetch community names from API when component mounts
+  useEffect(() => {
+    const fetchCommunities = async () => {
+      try {
+        setLoadingCommunities(true);
+        const response = await axios.get("http://localhost:4000/api/a1/getcommunity");
+        
+        // Log the full response for debugging
+        console.log("API response from /api/a1/getcommunity:", response.data);
+
+        const communityData = response.data;
+
+        // Check if the response has a nested 'communities' array (e.g., { communities: [...] })
+        if (communityData && Array.isArray(communityData.communities)) {
+          setCommunities(communityData.communities);
+          // Log the communities state for debugging
+          console.log("Fetched communities:", communityData.communities);
+        } else {
+          throw new Error("Unexpected API response format: Expected an object with a 'communities' array.");
+        }
+        setLoadingCommunities(false);
+      } catch (err) {
+        console.error("Error fetching communities:", err.response || err);
+        const errorMessage = err.response?.data?.message || err.message || "Failed to fetch communities.";
+        setError(errorMessage);
+        toast.error(errorMessage); // Sonner error toast
+        setLoadingCommunities(false);
+      }
+    };
+
+    fetchCommunities();
+  }, []);
 
   // Check if user is logged in
   if (!user || !username || !email) {
@@ -118,11 +153,23 @@ const JoinCommunityForm = () => {
               value={communityName}
               onChange={(e) => setCommunityName(e.target.value)}
               required
+              disabled={loadingCommunities}
             >
-              <option value="">Select a community</option>
-              <option value="UIvisuals">UIvisuals</option>
-              <option value="AI Learners">AI Learners</option>
-              <option value="Gaming Dev">Gaming Dev</option>
+              <option value="">
+                {loadingCommunities
+                  ? "Loading communities..."
+                  : communities.length === 0
+                  ? "No communities available"
+                  : "Select a community"}
+              </option>
+              {communities.map((community, index) => {
+                console.log("Rendering community option:", community); // Debug log
+                return (
+                  <option key={index} value={community.name}>
+                    {community.name}
+                  </option>
+                );
+              })}
             </select>
           </div>
 

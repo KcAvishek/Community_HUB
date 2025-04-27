@@ -3,6 +3,8 @@ import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import useAuthStore from "./Store/authStore";
 import JoinCommunityForm from "./JoinCommunityForm";
+import DashboardSection from "./admin/dashboardSection";
+import SettingsSection from "./Dashboards/settingSection";
 import TopicHub from "./TopicHub";
 import "./Dashboard.css";
 import { useNavigate } from "react-router-dom";
@@ -108,74 +110,7 @@ const cancelLogout = () => {
         <hr />
 
         {/* Render sections dynamically */}
-        {activeSection === "dashboard" && (
-          <div className="content-grid">
-            <div className="box announcements">
-              <h2>Announcement</h2>
-              <div className="announcement-item">
-                <p>
-                  <strong>UI Visuals</strong>
-                </p>
-                <p>
-                  There is a sprinkler that appears to be broken shooting out
-                  water in front of my home.
-                </p>
-              </div>
-              <div className="announcement-item">
-                <p>
-                  <strong>Gaming</strong>
-                </p>
-                <p>
-                  From its medieval origins to the digital era, learn
-                  everything there is to know about the ubiquitous lorem ipsum
-                  passage.
-                </p>
-              </div>
-              <div className="announcement-item">
-                <p>
-                  <strong>AI Learner</strong>
-                </p>
-                <p>
-                  From its medieval origins to the digital era, learn
-                  everything there is to know about the ubiquitous lorem ipsum
-                  passage.
-                </p>
-              </div>
-            </div>
-            <div className="box poll">
-              <h2>Poll and Voting</h2>
-              <form>
-                <label>
-                  <input type="radio" name="poll" value="Morning" />
-                  Morning
-                </label>
-                <label>
-                  <input
-                    type="radio"
-                    name="poll"
-                    value="Afternoon"
-                    defaultChecked
-                  />
-                  Afternoon
-                </label>
-                <label>
-                  <input type="radio" name="poll" value="Evening" />
-                  Evening
-                </label>
-                <label>
-                  <input type="radio" name="poll" value="Night" />
-                  Night
-                </label>
-                <button type="submit">Submit your vote</button>
-              </form>
-            </div>
-            <div className="box events">
-              <h2>Events</h2>
-              <Calendar onChange={setSelectedDate} value={selectedDate} />
-              <p>Selected Date: {selectedDate.toLocaleDateString()}</p>
-            </div>
-          </div>
-        )}
+        {activeSection === "dashboard"  && <DashboardSection activeSection={activeSection} />}
 
       
 
@@ -238,14 +173,14 @@ const cancelLogout = () => {
           </div>
         )}
 
-        {activeSection === "settings" && (
-          <div className="box settings-section">
-            <h2>Settings</h2>
-            <p>Account settings process.</p>
-          </div>
-        )}
+        
 
         {activeSection === "Topic-hub" && <TopicHub activeSection={activeSection} />}
+        {activeSection === "settings" && <SettingsSection activeSection={activeSection} />}
+
+
+
+
 
         {/* Logout Dialog */}
         {showLogoutDialog && (

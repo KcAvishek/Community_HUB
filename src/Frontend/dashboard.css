@@ -874,7 +874,6 @@ h2 {
 }
 
 /* ----------------------settings-------------------------- */
-
 body {
   margin: 0;
   padding: 0;
@@ -936,6 +935,12 @@ body {
   margin-bottom: 5px;
 }
 
+.input-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
 .input-field {
   width: 100%;
   padding: 10px;
@@ -958,10 +963,33 @@ body {
   cursor: not-allowed;
 }
 
-/* Style the Change Password button to match the input field size */
-.input-group .btn-secondary {
+.error-message {
+  color: #ff4d4f;
+  font-size: 12px;
+  margin-top: 2px;
+  font-weight: 400;
+}
+
+/* Style the Edit button container */
+.edit-button-container {
+  grid-column: span 2; /* Span both columns in the grid */
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 10px;
+}
+
+/* Style the Edit button */
+.edit-btn {
   width: 100%;
+  max-width: 120px; /* Limit the width for better appearance */
   padding: 10px;
+  font-size: 14px;
+  text-align: center;
+}
+
+/* Style the Change Password button */
+.header-section .btn-secondary {
+  padding: 10px 20px;
   font-size: 14px;
   text-align: center;
 }
@@ -970,6 +998,8 @@ body {
   display: flex;
   justify-content: flex-start;
   gap: 15px;
+  grid-column: span 2; /* Ensure the button spans both columns in the grid */
+  margin-top: 10px;
 }
 
 .btn {
@@ -1040,8 +1070,24 @@ body {
   gap: 15px;
   margin-top: 20px;
 }
+
+/* Toast styles */
+.sonner-toast {
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+}
+
+.sonner-toast--success {
+  background-color: #4caf50;
+  color: #ffffff;
+}
+
+.sonner-toast--error {
+  background-color: #f44336;
+  color: #ffffff;
+}
 /* ------------------topichub ------------------------- */
-/* Scope all styles to the topic-hub-section class to avoid affecting other components */
+
 .topic-hub-section {
   /* General reset and layout for this component only */
   * {
