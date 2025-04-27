@@ -1988,10 +1988,6 @@ body {
   text-align: right;
 }
 
-.community-dashboard .table-row {
-  /* No hover effect */
-}
-
 .community-dashboard .table-cell {
   padding: 12px;
   border-bottom: 1px solid #e0e0e0;
