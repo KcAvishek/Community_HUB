@@ -128,7 +128,7 @@ const TopicHub = () => {
 
         <div className="question-list">
           {questions.length === 0 ? (
-            <p>No questions yet. Be the first to ask!</p>
+            <p>No questions yet. Network Error</p>
           ) : (
             questions.map((question) => (
               <div key={question._id} className="question-item">

@@ -2,6 +2,7 @@ const User = require('../models/User');
 const Community = require('../models/Community');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const { sendEmail } = require('../utiles/mail'); 
 
 // Register new user
 const register = async (req, res) => {
@@ -18,16 +19,29 @@ const register = async (req, res) => {
     const newUser = await User.create({
       username,
       email,
-      password,
+      password, 
       role: 'non-member', // Set default role
     });
 
-    await newUser.save();
+    // Send email to the user asynchronously
+    sendEmail({
+      to: email,
+      subject: `Join the Community HUB Adventure, ${username}!`,
+      text: `Your Community HUB account is ready! You're a Non-Member—log in to discover communities, connect, and grow.`,
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+          <h1 style="color: #333;">Welcome, ${username}!</h1>
+          <p style="color: #555;">Congratulations! Your <strong>Community HUB</strong> account is ready. As a <strong>Non-Member</strong>, you're just one step away from connecting with different communities.</p>
+        </div>
+      `,
+    }).catch((error) => {
+      console.error('Error sending email (register):', error);
+    });
 
     res.status(200).json({ message: 'User registered successfully', newUser });
   } catch (err) {
-    console.log(err);
-    res.status(500).json({ message: 'Error during registration', error: err });
+    console.error('Error during registration:', err);
+    res.status(500).json({ message: 'Error during registration', error: err.message });
   }
 };
 
@@ -82,6 +96,21 @@ const login = async (req, res) => {
       { expiresIn: '1h' }
     );
 
+    // Send email to the user asynchronously
+    sendEmail({
+      to: user.email,
+      subject: `Successfully Login ${username}`,
+      text: 'You have been successfully logged in.',
+      html: `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+          <h1 style="color: #333;">Welcome, ${username}!</h1>
+          <p style="color: #555;">You have been successfully logged in.</p></p>
+        </div>
+      `,
+    }).catch((error) => {
+      console.error('Error sending email (login):', error);
+    });
+
     res.status(200).json({
       message: 'Login successfully',
       community: community_name,
@@ -112,10 +141,8 @@ const updateUserRoleAndCommunity = async (req, res) => {
     if (username) updateFields.username = username;
     if (email) updateFields.email = email;
     if (role) updateFields.role = role;
-    if (community_name !== undefined) updateFields.community_name = community_name; // Allow null/empty to unset community
+    if (community_name !== undefined) updateFields.community_name = community_name;
     if (password) {
-      // Note: In a production environment, you should hash the password using bcrypt
-      // e.g., updateFields.password = await bcrypt.hash(password, 10);
       updateFields.password = password; // Plain text for now to match existing setup
     }
 
@@ -166,5 +193,3 @@ const getAllUsers = async (req, res) => {
 };
 
 module.exports = { register, login, updateUserRoleAndCommunity, getCommunityMembers, getAllUsers };
-
-

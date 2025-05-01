@@ -10,6 +10,7 @@ const applicationRouter = require('../Backend/routes/applicationRoutes');
 const eventRoutes = require('../Backend/routes/eventRoutes');
 const attendanceRoutes = require('../Backend/routes/attendanceRoutes');
 const discussionRoutes = require('../Backend/routes/discussionRoutes');
+const emailRoutes = require('./routes/email');
 const dotenv = require('dotenv');
 // Converts the config.env file to environmental variables
 dotenv.config({ path: './config.env' });
@@ -41,6 +42,7 @@ app.use('/api/a3', eventRoutes);
 app.use('/api/a4', applicationRouter,);
 app.use('/api/a5', attendanceRoutes,);
 app.use('/api/a6', discussionRoutes,);
+app.use('/api/a7', emailRoutes,);
 
 
 

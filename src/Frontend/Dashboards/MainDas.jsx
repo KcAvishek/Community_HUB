@@ -229,7 +229,7 @@ const MainDas = () => {
         )}
 
         {activeSection === "settings" && <SettingsSection activeSection={activeSection} />}
-{activeSection === "Topic-hub" && <TopicHub activeSection={activeSection} />}
+        {activeSection === "Topic-hub" && <TopicHub activeSection={activeSection} />}
 
 
       </main>

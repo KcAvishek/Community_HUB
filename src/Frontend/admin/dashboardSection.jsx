@@ -21,7 +21,7 @@ const DashboardSection = () => {
         setAnnouncements(response.data);
       } catch (err) {
         console.error("Failed to fetch announcements:", err);
-        setError("Failed to fetch announcements. Please try again later.");
+        setError("Failed to fetch announcements. Network Error.");
       }
     };
 
@@ -37,7 +37,7 @@ const DashboardSection = () => {
         }
       } catch (err) {
         console.error("Failed to fetch communities:", err);
-        setError("Failed to fetch communities. Please try again later.");
+        setError("Failed to fetch communities. Network Error.");
       }
     };
 

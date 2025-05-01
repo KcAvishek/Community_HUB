@@ -1,5 +1,6 @@
 const Application = require('../models/Applications');
 const User = require('../models/User');
+const { sendEmail } = require('../utiles/mail'); // Import sendEmail
 
 // Submit application
 const createApplication = async (req, res) => {
@@ -42,7 +43,7 @@ const getAllApplications = async (req, res) => {
   }
 };
 
-// ✅ Update application status + user role & community
+// Update application status + user role & community
 const updateApplicationStatus = async (req, res) => {
   try {
     const { id } = req.params;
@@ -56,23 +57,41 @@ const updateApplicationStatus = async (req, res) => {
 
     // Update application status
     application.status = status;
-    await application.save();
+    application.save().catch((error) => {
+      console.error('Error saving application status:', error);
+    });
 
-    // ✅ Update user only when accepted
+    // Update user only when accepted
     if (status === 'accepted') {
-      const updatedUser = await User.findByIdAndUpdate(
+      User.findByIdAndUpdate(
         application.user_id,
         {
           role: 'communityMember',
           community_name: application.community_name,
         },
-        { new: true } // Ensure the returned document is updated
-      );
-
-      if (!updatedUser) {
-        return res.status(404).json({ success: false, message: 'User not found for update' });
-      }
+        { new: true }
+      ).catch((error) => {
+        console.error('Error updating user:', error);
+      });
     }
+
+    // Send email to the user asynchronously
+    const emailSubject = `Application ${status === 'accepted' ? 'Accepted' : 'Rejected'} for ${application.community_name}`;
+    const emailText = `Your application to join ${application.community_name} has been ${status}.`;
+    const emailHtml = `
+      <h1>Application Status Update</h1>
+      <p>Your application to join <strong>${application.community_name}</strong> has been <strong>${status}</strong>.</p>
+      ${status === 'accepted' ? '<p>Welcome to the community! You are now a <strong>Community Member</strong>.</p>' : '<p>Thank you for applying. Please contact the community leader for more details.</p>'}
+    `;
+
+    sendEmail({
+      to: application.email,
+      subject: emailSubject,
+      text: emailText,
+      html: emailHtml,
+    }).catch((error) => {
+      console.error('Error sending application status email:', error);
+    });
 
     // Send back updated application
     res.status(200).json({
